@@ -3,6 +3,11 @@ nom contient prénom + nom expliquer compliqué
 Examen:
 DateHeure
 nom vétérinaire = numéro vet FK, si on veut nom, aller chercher.
+Embauche X gestionnaire
 
 
-QUESTION: OPTIONAL
+QUESTION:
+OPTIONAL pour un seul
+user postres, créer user?
+database ou schema?
+adresse décomposer?
