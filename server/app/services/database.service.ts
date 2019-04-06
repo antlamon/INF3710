@@ -9,9 +9,9 @@ import { Room } from "../../../common/tables/Room";
 export class DatabaseService {
 
     public connectionConfig: pg.ConnectionConfig = {
-        user: "postgres",
+        user: "tp5",
         database: "vetodb",
-        password: "admin",
+        password: "tp5",
         port: 5432,
         host: "127.0.0.1",
         keepAlive : true
