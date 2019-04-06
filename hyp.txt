@@ -1,0 +1,8 @@
+Employé:
+nom contient prénom + nom expliquer compliqué
+Examen:
+DateHeure
+nom vétérinaire = numéro vet FK, si on veut nom, aller chercher.
+
+
+QUESTION: OPTIONAL
