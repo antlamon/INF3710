@@ -1,6 +1,3 @@
-DROP DATABASE IF EXISTS CASCADE VetoDB;
-CREATE DATABASE VetoDB;
-
 DROP SCHEMA IF EXISTS VetoDB CASCADE;
 
 CREATE SCHEMA VetoDB;
@@ -9,15 +6,14 @@ CREATE TYPE VetoDB.sexe AS ENUM('M', 'F');
 
 CREATE TYPE VetoDB.fonction AS ENUM('Gestionnaire', 'Veterinaire', 'Infirmiere', 'Secretaire', 'Personnel entretien');
 
-CREATE TYPE VetoDB.etat AS ENUM('Vivant', 'Decede')
+CREATE TYPE VetoDB.etat AS ENUM('Vivant', 'Decede');
 
 CREATE TYPE VetoDB.adresse AS (
     rue         VARCHAR(20),
     ville       VARCHAR(20),
     province    VARCHAR(20),
-    codePostal  VARCHAR(6)
+    codePostal  CHAR(6)
 );
-
 
 CREATE TABLE IF NOT EXISTS VetoDB.Employe (
     numEmploye          VARCHAR(5)      NOT NULL PRIMARY KEY,
@@ -70,7 +66,7 @@ CREATE TABLE IF NOT EXISTS VetoDB.Animal (
     dateInscription     DATE            NOT NULL,
     etat                VetoDB.etat     NOT NULL,
     PRIMARY KEY (numAnimal, numClinique),
-    FOREIGN KEY (num Proprietaire, numClinique) REFERENCES VetoDB.Proprietaire
+    FOREIGN KEY (numProprietaire, numClinique) REFERENCES VetoDB.Proprietaire
                                         ON DELETE CASCADE
 );
 
@@ -87,6 +83,7 @@ CREATE TABLE IF NOT EXISTS VetoDB.Prescription (
                                         ON DELETE RESTRICT,
     numClinique         VARCHAR(5)      NOT NULL REFERENCES VetoDB.Clinique
                                         ON DELETE RESTRICT,
+    numExamen           VARCHAR(5),
     quantite            INTEGER         NOT NULL,
     dateDebut           DATE            NOT NULL,
     dateFin             DATE            NOT NULL,
@@ -99,8 +96,24 @@ CREATE TABLE IF NOT EXISTS VetoDB.Examen (
                                         ON DELETE RESTRICT,
     heure               TIME            NOT NULL,
     description         VARCHAR         NOT NULL,
-    FOREIGN KEY numPrescription REFERENCES VetoDB.Prescription
+    FOREIGN KEY (numPrescription) REFERENCES VetoDB.Prescription
 );
 
 ALTER TABLE VetoDB.Prescription
-ADD COLUMN examen FOREIGN KEY numExamen REFERENCES VetoDB.Examen(numPrescription) ON DELETE RESTRICT;
+ADD CONSTRAINT examRef FOREIGN KEY (numExamen) REFERENCES VetoDB.Examen(numPrescription) ON DELETE RESTRICT;
+
+/* TODO : Ajout trigger gestionnaire + Veterinaire*/
+CREATE OR REPLACE FUNCTION processValGest() RETURNS TRIGGER AS $valGest$
+    BEGIN
+        IF (TG_OP = 'UPDATE') THEN
+            RETURN NEW;
+        ELSIF (TG_OP = 'INSERT') THEN
+            RETURN NEW;
+        END IF;
+        RETURN NULL;
+    END;
+$valGest$ LANGUAGE plpgsql;
+
+CREATE TRIGGER valGest
+    AFTER INSERT OR UPDATE ON VetoDB.Clinique
+    FOR EACH ROW EXECUTE PROCEDURE processValGest();
