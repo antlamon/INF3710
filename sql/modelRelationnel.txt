@@ -1,29 +1,9 @@
-Employe(numEmploye, nom, adresse, numTel, dateNaissance, sexe, nas, salaire)
+Employe(numEmploye, nom, adresse, numTel, dateNaissance, sexe, nas, salaire, fonction)
     PK(numEmploye)
-
-Gestionnaire(numEmploye)
-    PK(numEmploye)
-    FK(numEmploye) REFERENCES Employe(numEmploye)
-
-Veterinaire(numEmploye)
-    PK(numEmploye)
-    FK(numEmploye) REFERENCES Employe(numEmploye)
-
-Infirmiere(numEmploye)
-    PK(numEmploye)
-    FK(numEmploye) REFERENCES Employe(numEmploye)
-
-Secretaire(numEmploye)
-    PK(numEmploye)
-    FK(numEmploye) REFERENCES Employe(numEmploye)
-
-PersonnelEntretien(numEmploye)
-    PK(numEmploye)
-    FK(numEmploye) REFERENCES Employe(numEmploye)
 
 Clinique(numClinique, adresse, numTel, numFax, numGestionnaire)
     PK(numClinique)
-    FK(numGestionnaire) REFERENCES Gestionnaire(numEmploye)
+    FK(numGestionnaire) REFERENCES Employe(numEmploye)
 
 Embauche(numEmploye, numClinique)
     PK(numEmploye, numClinique)
@@ -40,10 +20,14 @@ Animal(numAnimal, numProprietaire, nom, type, description, dateNaissance, dateIn
 Traitement(numTraitement, description, cout)
     PK(numTraitement)
 
-Examen(numTraitement, dateHeure, numAnimal, numVeterinaire)
-    PK(numTraitement, dateHeure, numVeterinaire)
-    FK(numTraitement) REFERENCES Traitement(numTraitement)
+Prescription(numPrescription, numAnimal, numTraitement, numExamen, quantite, dateDebut, dateFin)
+    PK(numPrescription)
     FK(numAnimal) REFERENCES Animal(numAnimal)
-    FK(numVeterinaire) REFERENCES Veterinaire(numEmploye)
+    FK(numTraitement) REFERENCES Traitement(numTraitement)
+    FK(numExamen) REFERENCES Examen(numExamen)
 
-Prescription()
+
+Examen(numPrescription, heure, numVeterinaire)
+    PK(numPrescription)
+    FK(numPrescription) REFERENCES Prescription(numPrescription)
+    FK(numVeterinaire) REFERENCES Employe(numEmploye)

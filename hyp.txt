@@ -1,13 +1,16 @@
-Employé:
-nom contient prénom + nom expliquer compliqué
+Employï¿½:
+nom contient prï¿½nom + nom expliquer compliquï¿½
 Examen:
-DateHeure
-nom vétérinaire = numéro vet FK, si on veut nom, aller chercher.
+La date de l'examen est obtenu avec la dateDebut et dateFin de la prescription
+nom vï¿½tï¿½rinaire = numï¿½ro vet FK, si on veut nom, aller chercher.
 Embauche X gestionnaire
+Employï¿½ -> Dirige = fonction == gestionnaire, Vet => exam
+Prescription 0 pour examen car un examen peut ï¿½tre donnï¿½ par la secrï¿½taire.
+
 
 
 QUESTION:
 OPTIONAL pour un seul
-user postres, créer user?
+user postres, crï¿½er user?
 database ou schema?
-adresse décomposer?
+adresse dï¿½composer?
