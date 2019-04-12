@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS VetoDB.Examen (
     numPrescription     VARCHAR(5)      NOT NULL PRIMARY KEY,
     numVeterinaire      VARCHAR(5)      NOT NULL REFERENCES VetoDB.Employe(numEmploye),
     heure               TIME            NOT NULL,
+    description         VARCHAR         NOT NULL,
     FOREIGN KEY numPrescription REFERENCES VetoDB.Prescription
 );
 

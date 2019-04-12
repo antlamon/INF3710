@@ -27,7 +27,7 @@ Prescription(numPrescription, numAnimal, numTraitement, numExamen, quantite, dat
     FK(numExamen) REFERENCES Examen(numExamen)
 
 
-Examen(numPrescription, heure, numVeterinaire)
+Examen(numPrescription, heure, description, numVeterinaire)
     PK(numPrescription)
     FK(numPrescription) REFERENCES Prescription(numPrescription)
     FK(numVeterinaire) REFERENCES Employe(numEmploye)
