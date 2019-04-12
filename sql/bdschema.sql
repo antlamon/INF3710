@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS VetoDB.Employe (
     dateNaissance       DATE            NOT NULL,
     sexe                VetoDB.sexe     NOT NULL,
     nas                 VARCHAR(9)      NOT NULL,
-    salaire             NUMERIC(6,0)    NOT NULL,
+    salaire             NUMERIC(6,0)    NOT NULL    CHECK (salaire > 0),
     fonction            VetoDB.fonction NOT NULL
 );
 
@@ -37,30 +37,41 @@ CREATE TABLE IF NOT EXISTS VetoDB.Clinique (
     numTel              VARCHAR(11)     NOT NULL,
     numFax              VARCHAR(11)     NOT NULL,
     numGestionnaire     VARCHAR(5)      NOT NULL REFERENCES VetoDB.Employe(numEmploye)
+                                        ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS VetoDB.Embauche (
-    numEmploye          VARCHAR(5)      NOT NULL REFERENCES VetoDB.Employe,
-    numClinique         VARCHAR(5)      NOT NULL REFERENCES VetoDB.Clinique,
+    numEmploye          VARCHAR(5)      NOT NULL REFERENCES VetoDB.Employe
+                                        ON DELETE CASCADE,
+    numClinique         VARCHAR(5)      NOT NULL REFERENCES VetoDB.Clinique
+                                        ON DELETE CASCADE,
     PRIMARY KEY(numEmploye, numClinique)
 );
 
 CREATE TABLE IF NOT EXISTS VetoDB.Proprietaire (
-numProprietaire     VARCHAR(5)          NOT NULL PRIMARY KEY,
+    numProprietaire     VARCHAR(5)      NOT NULL,
+    numClinique         VARCHAR(5)      NOT NULL REFERENCES VetoDB.Clinique
+                                        ON DELETE CASCADE,
     nom                 VARCHAR(30)     NOT NULL,
     adresse             VARCHAR(40)     NOT NULL,
-    numTel              VARCHAR(11)     NOT NULL
+    numTel              VARCHAR(11)     NOT NULL,
+    PRIMARY KEY (numProprietaire, numClinique)
 );
 
 CREATE TABLE IF NOT EXISTS VetoDB.Animal (
-    numAnimal           VARCHAR(5)      NOT NULL PRIMARY KEY,
-    numProprietaire     VARCHAR(5)      NOT NULL REFERENCES VetoDB.Proprietaire,
+    numAnimal           VARCHAR(5)      NOT NULL,
+    numProprietaire     VARCHAR(5)      NOT NULL,
+    numClinique         VARCHAR(5)      NOT NULL REFERENCES VetoDB.Clinique
+                                        ON DELETE CASCADE,
     nom                 VARCHAR(30)     NOT NULL,
     type                VARCHAR(10)     NOT NULL,
     description         VARCHAR         NOT NULL,
     dateNaissance       DATE            NOT NULL,
     dateInscription     DATE            NOT NULL,
-    etat                VetoDB.etat     NOT NULL
+    etat                VetoDB.etat     NOT NULL,
+    PRIMARY KEY (numAnimal, numClinique),
+    FOREIGN KEY (num Proprietaire, numClinique) REFERENCES VetoDB.Proprietaire
+                                        ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS VetoDB.Traitement (
@@ -71,21 +82,25 @@ CREATE TABLE IF NOT EXISTS VetoDB.Traitement (
 
 CREATE TABLE IF NOT EXISTS VetoDB.Prescription (
     numPrescription     VARCHAR(5)      NOT NULL PRIMARY KEY,
-    numAnimal           VARCHAR(5)      NOT NULL REFERENCES VetoDB.Animal,
-    numTraitement       VARCHAR(5)      NOT NULL REFERENCES VetoDB.Traitement,
-    numExamen           VARCHAR(5)      REFERENCES VetoDB.Examen,
+    numAnimal           VARCHAR(5)      NOT NULL,
+    numTraitement       VARCHAR(5)      NOT NULL REFERENCES VetoDB.Traitement
+                                        ON DELETE RESTRICT,
+    numClinique         VARCHAR(5)      NOT NULL REFERENCES VetoDB.Clinique
+                                        ON DELETE RESTRICT,
     quantite            INTEGER         NOT NULL,
     dateDebut           DATE            NOT NULL,
-    dateFin             DATE            NOT NULL
+    dateFin             DATE            NOT NULL,
+    FOREIGN KEY (numAnimal, numClinique) REFERENCES VetoDB.Animal
 );
 
 CREATE TABLE IF NOT EXISTS VetoDB.Examen (
     numPrescription     VARCHAR(5)      NOT NULL PRIMARY KEY,
-    numVeterinaire      VARCHAR(5)      NOT NULL REFERENCES VetoDB.Employe(numEmploye),
+    numVeterinaire      VARCHAR(5)      NOT NULL REFERENCES VetoDB.Employe(numEmploye)
+                                        ON DELETE RESTRICT,
     heure               TIME            NOT NULL,
     description         VARCHAR         NOT NULL,
     FOREIGN KEY numPrescription REFERENCES VetoDB.Prescription
 );
 
 ALTER TABLE VetoDB.Prescription
-ADD CONSTRAINT examen FOREIGN KEY numExamen REFERENCES VetoDB.Examen(numPrescription);
+ADD COLUMN examen FOREIGN KEY numExamen REFERENCES VetoDB.Examen(numPrescription) ON DELETE RESTRICT;

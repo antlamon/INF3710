@@ -10,12 +10,14 @@ Embauche(numEmploye, numClinique)
     FK(numEmploye) REFERENCES Employe(numEmploye)
     FK(numClinique) REFERENCES Clinique(numClinique)
 
-Proprietaire(numProprietaire, nom, adresse, numTel)
-    PK(numProprietaire)
+Proprietaire(numProprietaire numClinique, nom, adresse, numTel)
+    PK(numProprietaire, numClinique)
+    FK(numClinique) REFERENCES Clinique(numClinique)
 
-Animal(numAnimal, numProprietaire, nom, type, description, dateNaissance, dateInscription, etat)
-    PK(numAnimal)
+Animal(numAnimal, numProprietaire, numClinique, nom, type, description, dateNaissance, dateInscription, etat)
+    PK(numAnimal, numClinique)
     FK(numProprietaire) REFERENCES Proprietaire(numProprietaire)
+    FK(numClinique) REFERENCES Clinique(numClinique)
 
 Traitement(numTraitement, description, cout)
     PK(numTraitement)
