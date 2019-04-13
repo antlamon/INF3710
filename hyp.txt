@@ -6,6 +6,7 @@ nom v�t�rinaire = num�ro vet FK, si on veut nom, aller chercher.
 Embauche X gestionnaire
 Employ� -> Dirige = fonction == gestionnaire, Vet => exam
 Prescription 0 pour examen car un examen peut �tre donn� par la secr�taire.
+Gestionnaire est dans embauche aussi?
 
 AJOUTER LA DESCRIPTION DANS EXAMEN
 

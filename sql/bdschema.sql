@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS Employe (
 
 CREATE TABLE IF NOT EXISTS Clinique (
     numClinique         VARCHAR(5)      NOT NULL PRIMARY KEY,
-    adresse             adresse  NOT NULL,
+    adresse             adresse         NOT NULL,
+    nom                 VARCHAR(20)     NOT NULL,
     numTel              VARCHAR(11)     NOT NULL,
     numFax              VARCHAR(11)     NOT NULL,
     numGestionnaire     VARCHAR(5)      NOT NULL REFERENCES Employe(numEmploye)
