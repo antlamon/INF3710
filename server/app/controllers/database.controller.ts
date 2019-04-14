@@ -43,14 +43,14 @@ export class DatabaseController {
                 this.databaseService.getAnimalsLikeName(req.params.name).then((result: pg.QueryResult) => {
                     const animals: Animal[] = result.rows.map((an: any) => (
                         {
-                            numAnimal: an.numAnimal,
-                            numProprietaire: an.numProprietaire,
-                            numClinique: an.numClinique,
+                            numAnimal: an.numanimal,
+                            numProprietaire: an.numaroprietaire,
+                            numClinique: an.numclinique,
                             nom: an.nom,
                             type: an.type,
                             description: an.description,
-                            dateNaissance: an.dateNaissance,
-                            dateInscription: an.dateInscription,
+                            dateNaissance: an.datenaissance,
+                            dateInscription: an.dateinscription,
                             etat: an.etat
                         }));
                     res.json(animals);
