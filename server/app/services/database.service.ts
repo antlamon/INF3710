@@ -92,12 +92,43 @@ export class DatabaseService {
     public getTreatmentsFromAnimal(numAnimal: string, numClinique: string): Promise<pg.QueryResult> {
         this.pool.connect();
         const query: string = `
-        SELECT *
-        FROM VetoDB.Animal Natural JOIN VetoDB.Prescription JOIN VetoDB.Traitement
-        ON Traitement.numTraitement = Prescription.numTraitement
-        WHERE numAnimal = '${numAnimal}' AND numClinique = '${numClinique}';`;
+        SELECT * FROM
+        vetodb.animal NATURAL JOIN (SELECT p.*, description as descriptionTraitement, cout
+                                    FROM vetodb.prescription p NATURAL JOIN vetodb.traitement) AS PT
+        WHERE numAnimal = 'A0000' AND numClinique = 'C0000';
+        `;
 
         return this.pool.query(query);
+    }
+
+    public async getBill(numAnimal: string, numClinique: string): Promise<object> {
+        const result: pg.QueryResult = await this.getTreatmentsFromAnimal(numAnimal, numClinique);
+
+        const animal: Animal = {
+            numAnimal: result.rows[0].numanimal,
+            numProprietaire: result.rows[0].numproprietaire,
+            numClinique: result.rows[0].numclinique,
+            nom: result.rows[0].nom,
+            description: result.rows[0].description,
+            dateInscription: result.rows[0].dateinscription,
+            dateNaissance: result.rows[0].datenaissance,
+            type: result.rows[0].type,
+            etat: result.rows[0].etat,
+        };
+
+        const treatments: object[] = [];
+        result.rows.forEach((row: any) => {
+            treatments.push({
+                numTraitement: row.numtraitement,
+                quantite: row.quantite,
+                prix: row.quantite * row.cout,
+            });
+        });
+        const totalPrice: number = treatments.reduce((price: number, treatment: any) => {
+            return price + treatment.prix;
+        },                                           0);
+
+        return {animal, treatments, totalPrice};
     }
 
     // HOTEL
