@@ -1,5 +1,5 @@
 <mat-horizontal-stepper [linear]="true" #stepper>
-  <mat-step [stepControl]="clinicForm">
+  <mat-step [stepControl]="clinicForm" *ngIf="newAnimal">
     <form [formGroup]="clinicForm">
       <ng-template matStepLabel>Sélectionnez une clinique</ng-template>
       <mat-form-field>
@@ -27,17 +27,16 @@
         </mat-select>
       </mat-form-field>
       <div>
-        <button mat-button color="accent" matStepperPrevious>Back</button>
+        <button mat-button color="accent" matStepperPrevious *ngIf="newAnimal">Back</button>
         <button mat-button color="accent" matStepperNext [disabled]="ownerForm.invalid">Next</button>
       </div>
     </form>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
+    <ng-template matStepLabel>Entrez les informations de l'animal</ng-template>
     <form [formGroup]="animalForm" ng-submit="submit()">
-      <mat-form-field>
-        <ng-template matStepLabel>Entrez les informations de l'animal</ng-template>
-        <input type="text" matInput placeholder="numéro de l'animal" formControlName="numAnimal">
+      <mat-form-field *ngIf="newAnimal">
+        <input type="text" matInput placeholder="numéro de l'animal" formControlName="numAnimal" maxlength="5">
       </mat-form-field>
       <mat-form-field>
         <input type="text" matInput placeholder="nom de l'animal" formControlName="nom">
@@ -49,15 +48,26 @@
         <input type="text" matInput placeholder="description de l'animal" formControlName="description">
       </mat-form-field>
       <mat-form-field>
-        <input type="text" matInput placeholder="Date de naissance de l'animal" formControlName="dateNaissance">
+        <input matInput [matDatepicker]="picker" placeholder="Date de naissance de l'animal"
+          formControlName="dateNaissance">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-      <mat-form-field>
-        <input type="text" matInput placeholder="État de l'animal" formControlName="etat">
+      <mat-form-field *ngIf="!newAnimal">
+        <mat-label>État</mat-label>
+        <mat-select formControlName="etat">
+          <mat-option value="Vivant">
+            Vivant
+          </mat-option>
+          <mat-option value="Decede">
+            Décédé
+          </mat-option>
+        </mat-select>
       </mat-form-field>
       <div>
         <button mat-button color="accent" matStepperPrevious>Back</button>
         <button type="submit" mat-button color="accent" (click)="submit()"
-          [disabled]="animalForm.invalid">Ajouter</button>
+          [disabled]="animalForm.invalid">{{newAnimal ? "Ajouter": "Modifier"}}</button>
       </div>
     </form>
   </mat-step>

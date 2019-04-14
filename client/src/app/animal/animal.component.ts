@@ -1,8 +1,9 @@
 import { Component } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
+import { MatDialog, MatDialogConfig } from "@angular/material";
+
 import { Animal } from "../../../../common/tables/Animal";
 import { CommunicationService } from "../communication.service";
-import { MatDialog } from "@angular/material";
 import { NewAnimalFormComponent } from "./new-animal-form/new-animal-form.component";
 
 interface AnimalInfo {
@@ -44,8 +45,21 @@ export class AnimalComponent {
       console.log(animals);
     });
   }
+
   protected openModal(): void {
     this.dialog.open(NewAnimalFormComponent);
+  }
+
+  protected editAnimal(animal: Animal, i: number): void {
+    const config: MatDialogConfig = new MatDialogConfig();
+    config.data = animal;
+    this.dialog.open(NewAnimalFormComponent, config).afterClosed().subscribe((animalM: Animal) => {
+      if (animalM) {
+        this.animalInfos[i].animal = animalM;
+      } else {
+        // TODO : Gestion d'erreur.
+      }
+    });
   }
 
   protected getAnimalTreatments(animalIndex: number): void {

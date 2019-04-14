@@ -18,7 +18,7 @@
   <mat-divider></mat-divider>
 
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let info of animalInfos">
+    <mat-expansion-panel *ngFor="let info of animalInfos; index as i">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{info.animal.numAnimal}} - {{info.animal.nom}}
@@ -27,6 +27,14 @@
           Clinique : {{info.animal.numClinique}} - Propriétaire : {{info.animal.numProprietaire}}
         </mat-panel-description>
       </mat-expansion-panel-header>
+      <div class="align-end">
+        <button mat-button color="accent" (click)="editAnimal(info.animal, i)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-button color="warn">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
       <mat-tab-group dynamicHeight>
         <mat-tab label="Information">
           <p>Date de naissance : {{info.animal.dateNaissance.toLocaleDateString()}}</p>
@@ -68,15 +76,4 @@
       </mat-tab-group>
     </mat-expansion-panel>
   </mat-accordion>
-
-
-  <!-- <mat-action-list>
-    <button mat-list-item *ngFor="let animal of animals">
-      <mat-icon mat-list-icon>pets</mat-icon>
-      <h4 mat-line>{{animal.nom}}</h4>
-      <p mat-line> {{animal.etat}} </p>
-      <button>Générer Facture</button>
-      <button>Visualiser Traitement</button>
-    </button>
-  </mat-action-list> -->
 </div>

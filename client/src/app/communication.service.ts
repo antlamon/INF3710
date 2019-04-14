@@ -13,6 +13,20 @@ export class CommunicationService {
     private readonly BASE_URL: string = "http://localhost:3000/database";
     public constructor (private http: HttpClient) { }
 
+    public postAnimal(animal: Animal): Observable<number> {
+        return this.http.post<number>(this.BASE_URL + "/animal", animal).pipe(
+            catchError(this.handleError<number>("postAnimal"))
+        );
+    }
+
+    public putAnimal(animal: Animal): Observable<number> {
+        return this.http.put<number>(
+            this.BASE_URL + "/animal", animal,
+            { params: { numClinique: animal.numClinique, numAnimal: animal.numAnimal } }).pipe(
+                catchError(this.handleError<number>("putAnimal"))
+            );
+    }
+
     public getAnimalsFromName(name: string): Observable<Animal[]> {
         return this.http.get<Animal[]>(this.BASE_URL + `/animal/${name}`).pipe(
             catchError(this.handleError<Animal[]>("getAnimals"))
