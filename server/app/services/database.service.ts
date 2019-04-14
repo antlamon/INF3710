@@ -10,9 +10,9 @@ import { data } from "../populateDB";
 export class DatabaseService {
 
     public connectionConfig: pg.ConnectionConfig = {
-        user: "postgres",
+        user: "tp5",
         database: "postgres",
-        password: "admin",
+        password: "tp5",
         port: 5432,
         host: "127.0.0.1",
         keepAlive: true
@@ -25,9 +25,9 @@ export class DatabaseService {
     METHODES DE DEBUG
     */
     public createSchema(): Promise<pg.QueryResult> {
-       this.pool.connect();
+        this.pool.connect();
 
-       return this.pool.query(schema);
+        return this.pool.query(schema);
     }
 
     public populateDb(): Promise<pg.QueryResult> {
@@ -40,6 +40,12 @@ export class DatabaseService {
         this.pool.connect();
 
         return this.pool.query(`SELECT * FROM VetoDB.${tableName};`);
+    }
+
+    public getAnimalsLikeName(name: string): Promise<pg.QueryResult> {
+        this.pool.connect();
+
+        return this.pool.query(`SELECT * FROM VetoDB.Animal WHERE nom LIKE '%${name}%';`);
     }
 
     public createAnimal(animal: Animal): Promise<pg.QueryResult> {
@@ -187,10 +193,10 @@ export class DatabaseService {
 
     // GUEST
     public createGuest(guestNo: string,
-                       nas: string,
-                       guestName: string,
-                       gender: string,
-                       guestCity: string): Promise<pg.QueryResult> {
+        nas: string,
+        guestName: string,
+        gender: string,
+        guestCity: string): Promise<pg.QueryResult> {
         this.pool.connect();
         const values: string[] = [
             guestNo,
@@ -206,10 +212,10 @@ export class DatabaseService {
 
     // BOOKING
     public createBooking(hotelNo: string,
-                         guestNo: string,
-                         dateFrom: Date,
-                         dateTo: Date,
-                         roomNo: string): Promise<pg.QueryResult> {
+        guestNo: string,
+        dateFrom: Date,
+        dateTo: Date,
+        roomNo: string): Promise<pg.QueryResult> {
         this.pool.connect();
         const values: string[] = [
             hotelNo,

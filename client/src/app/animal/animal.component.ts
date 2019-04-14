@@ -22,7 +22,9 @@ export class AnimalComponent {
       return;
     }
 
-    // TODO : Search Animals by name
-    console.log(this.searchInput.value);
+    this.communicationService.getAnimalsFromName(this.searchInput.value).subscribe((animals: Animal[]) => {
+      this.animals = animals;
+      console.log(animals);
+    })
   }
 }
