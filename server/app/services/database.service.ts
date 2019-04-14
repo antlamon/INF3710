@@ -92,10 +92,11 @@ export class DatabaseService {
     public getTreatmentsFromAnimal(numAnimal: string, numClinique: string): Promise<pg.QueryResult> {
         this.pool.connect();
         const query: string = `
-        SELECT *
-        FROM VetoDB.Animal Natural JOIN VetoDB.Prescription JOIN VetoDB.Traitement
-        ON Traitement.numTraitement = Prescription.numTraitement
-        WHERE numAnimal = '${numAnimal}' AND numClinique = '${numClinique}';`;
+        SELECT * FROM
+        vetodb.animal NATURAL JOIN (SELECT p.*, description as descriptionTraitement, cout
+                                    FROM vetodb.prescription p NATURAL JOIN vetodb.traitement) AS PT
+        WHERE numAnimal = 'A0000' AND numClinique = 'C0000';
+        `;
 
         return this.pool.query(query);
     }
