@@ -76,7 +76,7 @@ export class DatabaseController {
             const numAnimal: string = req.query.numAnimal;
             const numClinique: string = req.query.numClinique;
             this.databaseService.getTreatmentsFromAnimal(numAnimal, numClinique).then((result: pg.QueryResult) => {
-                res.json(result.rowCount);
+                res.json(result.rows);
             }).catch((e: Error) => {
                 console.error(e.stack);
                 res.json(-1);
