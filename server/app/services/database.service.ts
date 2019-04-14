@@ -44,12 +44,8 @@ export class DatabaseService {
 
     public async getOwners(numClinique: string): Promise<pg.QueryResult> {
         const client: pg.PoolClient = await this.pool.connect();
-        let query: string = `SELECT numProprietaire, nom FROM VetoDB.Proprietaire`;
-        if (numClinique) {
-            query += ` WHERE numClinique = '${numClinique}';`;
-        } else {
-            query += ';';
-        }
+        const query: string = numClinique ? `SELECT numProprietaire, nom FROM VetoDB.Proprietaire WHERE numClinique = '${numClinique}';`
+                                          : `TABLE VetoDB.Proprietaire;`;
 
         const result: pg.QueryResult = await this.pool.query(query);
         client.release();

@@ -6,7 +6,7 @@ import { catchError } from "rxjs/operators";
 import { Animal } from "../../../common/tables/Animal";
 import { Bill } from "../../../common/tables/Bill";
 import { ClinicSimple } from "../../../common/tables/Clinic";
-import { OwnerSimple } from "../../../common/tables/Owner";
+import { OwnerSimple, Owner } from "../../../common/tables/Owner";
 import { PrescriptionTreatment } from "../../../common/tables/PrescriptionTraitement";
 
 @Injectable()
@@ -66,7 +66,13 @@ export class CommunicationService {
 
     public getOwnersFromClinic(numClinique: string): Observable<OwnerSimple[]> {
         return this.http.get<OwnerSimple[]>(this.BASE_URL + `/owners`, { params: { numClinique } }).pipe(
-            catchError(this.handleError<OwnerSimple[]>("getClinics"))
+            catchError(this.handleError<OwnerSimple[]>("getOwnerFromClinic"))
+        );
+    }
+
+    public getAllOwners(): Observable<Owner[]> {
+        return this.http.get<Owner[]>(this.BASE_URL + `/owners`).pipe(
+            catchError(this.handleError<Owner[]>("getOwners"))
         );
     }
 
