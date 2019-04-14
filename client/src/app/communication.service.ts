@@ -12,8 +12,21 @@ export class CommunicationService {
     public constructor (private http: HttpClient) { }
 
     public getAnimalsFromName(name: string): Observable<Animal[]> {
+        console.log("sending");
         return this.http.get<Animal[]>(this.BASE_URL + `/animal/${name}`).pipe(
             catchError(this.handleError<Animal[]>("getAnimals"))
+        );
+    }
+
+    public getBill(numAnimal: string, numClinique: string): Observable<object> {
+        return this.http.get<object>(this.BASE_URL + "/bill", {params: {numAnimal, numClinique}}).pipe(
+            catchError(this.handleError<object>("getBill"))
+        );
+    }
+
+    public getTreatments(numAnimal: string, numClinique: string): Observable<object> {
+        return this.http.get<object>(this.BASE_URL + "/treatments", {params: {numAnimal, numClinique}}).pipe(
+            catchError(this.handleError<object>("getTreatments"))
         );
     }
 

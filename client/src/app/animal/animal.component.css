@@ -11,3 +11,11 @@ mat-form-field {
 .mat-expansion-panel-header-description {
   flex: 1;
 }
+
+table {
+  width: 80%;
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
+}

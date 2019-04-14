@@ -2,13 +2,10 @@ import { CommonModule } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import {
-  MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatGridListModule,
-  MatIconModule, MatInputModule, MatListModule, MatSidenavModule, MatToolbarModule, MatExpansionModule
-} from "@angular/material";
+import { MatButtonModule, MatCardModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule,
+   MatInputModule, MatListModule, MatSidenavModule, MatTableModule, MatTabsModule, MatToolbarModule } from "@angular/material";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-
 import { AnimalComponent } from "./animal/animal.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -41,7 +38,9 @@ import { HomeComponent } from "./home/home.component";
       MatInputModule,
       ReactiveFormsModule,
       FormsModule,
-      MatExpansionModule
+      MatExpansionModule,
+      MatTabsModule,
+      MatTableModule
     ]
   ],
   providers: [CommunicationService],

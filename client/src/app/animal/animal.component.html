@@ -8,24 +8,58 @@
 </form>
 
 <div *ngIf="submitted">
-  <h3>{{animals ? animals.length : 0}} Résultat{{animals && animals.length > 1 ? "s": ""}}</h3>
+  <h3>{{animalInfos ? animalInfos.length : 0}} Résultat{{animalInfos && animalInfos.length > 1 ? "s": ""}}</h3>
   <mat-divider></mat-divider>
 
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let animal of animals">
+    <mat-expansion-panel *ngFor="let info of animalInfos">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{animal.nom}} - {{animal.numAnimal}}
+          {{info.animal.nom}} - {{info.animal.numAnimal}}
         </mat-panel-title>
         <mat-panel-description>
-          Clinique : {{animal.numClinique}} - Propriétaire : {{animal.numProprietaire}}
+          Clinique : {{info.animal.numClinique}} - Propriétaire : {{info.animal.numProprietaire}}
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <p>Date de naissance : {{animal.dateNaissance.toLocaleDateString()}}</p>
-      <p>Date d'inscription : {{animal.dateInscription.toLocaleDateString()}}</p>
-      <p>Type : {{animal.type}}</p>
-      <p>État : {{animal.etat}}</p>
-      <p>Description : {{animal.description}}</p>
+      <mat-tab-group dynamicHeight>
+        <mat-tab label="Information">
+          <p>Date de naissance : {{info.animal.dateNaissance.toLocaleDateString()}}</p>
+          <p>Date d'inscription : {{info.animal.dateInscription.toLocaleDateString()}}</p>
+          <p>Type : {{info.animal.type}}</p>
+          <p>État : {{info.animal.etat}}</p>
+          <p>Description : {{info.animal.description}}</p>
+        </mat-tab>
+        <mat-tab label="Traitements">
+          Large content
+        </mat-tab>
+        <mat-tab label="Facture">
+          <div *ngIf="info.bill">
+            <table mat-table [dataSource]="info.bill.treatments">
+              <ng-container matColumnDef="traitement">
+                <th mat-header-cell *matHeaderCellDef> Traitement </th>
+                <td mat-cell *matCellDef="let treatment"> {{treatment.numTraitement}} </td>
+                <td mat-footer-cell *matFooterCellDef> Total </td>
+              </ng-container>
+
+              <ng-container matColumnDef="quantite">
+                <th mat-header-cell *matHeaderCellDef> Quantité </th>
+                <td mat-cell *matCellDef="let treatment"> {{treatment.quantite}} </td>
+                <td mat-footer-cell *matFooterCellDef></td>
+              </ng-container>
+
+              <ng-container matColumnDef="cout">
+                <th mat-header-cell *matHeaderCellDef> Coût </th>
+                <td mat-cell *matCellDef="let treatment"> {{treatment.prix | currency}} </td>
+                <td mat-footer-cell *matFooterCellDef> {{info.bill.totalPrice | currency}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+            </table>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
     </mat-expansion-panel>
   </mat-accordion>
 
