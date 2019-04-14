@@ -24,9 +24,9 @@ export class DatabaseService {
     METHODES DE DEBUG
     */
     public createSchema(): Promise<pg.QueryResult> {
-       this.pool.connect();
+        this.pool.connect();
 
-       return this.pool.query(schema);
+        return this.pool.query(schema);
     }
 
     public populateDb(): Promise<pg.QueryResult> {
@@ -94,7 +94,7 @@ export class DatabaseService {
         SELECT * FROM
         vetodb.animal NATURAL JOIN (SELECT p.*, description as descriptionTraitement, cout
                                     FROM vetodb.prescription p NATURAL JOIN vetodb.traitement) AS PT
-        WHERE numAnimal = 'A0000' AND numClinique = 'C0000';
+        WHERE numAnimal = '${numAnimal}' AND numClinique = '${numClinique}';
         `;
 
         return this.pool.query(query);
@@ -102,31 +102,31 @@ export class DatabaseService {
 
     public async getBill(numAnimal: string, numClinique: string): Promise<object> {
         const result: pg.QueryResult = await this.getTreatmentsFromAnimal(numAnimal, numClinique);
-
-        const animal: Animal = {
-            numAnimal: result.rows[0].numanimal,
-            numProprietaire: result.rows[0].numproprietaire,
-            numClinique: result.rows[0].numclinique,
-            nom: result.rows[0].nom,
-            description: result.rows[0].description,
-            dateInscription: result.rows[0].dateinscription,
-            dateNaissance: result.rows[0].datenaissance,
-            type: result.rows[0].type,
-            etat: result.rows[0].etat,
-        };
-
-        const treatments: object[] = [];
-        result.rows.forEach((row: any) => {
-            treatments.push({
-                numTraitement: row.numtraitement,
-                quantite: row.quantite,
-                prix: row.quantite * row.cout,
+        if (result.rowCount > 0) {
+            const animal: Animal = {
+                numAnimal: result.rows[0].numanimal,
+                numProprietaire: result.rows[0].numproprietaire,
+                numClinique: result.rows[0].numclinique,
+                nom: result.rows[0].nom,
+                description: result.rows[0].description,
+                dateInscription: result.rows[0].dateinscription,
+                dateNaissance: result.rows[0].datenaissance,
+                type: result.rows[0].type,
+                etat: result.rows[0].etat,
+            };
+            const treatments: object[] = [];
+            result.rows.forEach((row: any) => {
+                treatments.push({
+                    numTraitement: row.numtraitement,
+                    quantite: row.quantite,
+                    prix: row.quantite * row.cout,
+                });
             });
-        });
-        const totalPrice: number = treatments.reduce((price: number, treatment: any) => {
-            return price + treatment.prix;
-        },                                           0);
+            const totalPrice: number = treatments.reduce((price: number, treatment: any) => {
+                return price + treatment.prix;
+            },                                           0);
 
-        return {animal, treatments, totalPrice};
+            return { animal, treatments, totalPrice };
+        } else { return { noBill: true }; }
     }
 }
