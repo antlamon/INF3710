@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import { inject, injectable } from "inversify";
 import * as pg from "pg";
 
+import { Animal } from "../../../common/tables/Animal";
 import {Hotel} from "../../../common/tables/Hotel";
 import {Room} from '../../../common/tables/Room';
 
@@ -32,6 +33,17 @@ export class DatabaseController {
                         res.json(result);
                     }).catch((e: Error) => {
                         console.error(e.stack);
+                    });
+        });
+
+        router.post("/animal",
+                    (req: Request, res: Response, nect: NextFunction) => {
+                    const animal: Animal = req.body;
+                    this.databaseService.createAnimal(animal).then((result: pg.QueryResult) => {
+                        res.json(result.rowCount);
+                    }).catch((e: Error) => {
+                        console.error(e.stack);
+                        res.json(-1);
                     });
         });
 
