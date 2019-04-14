@@ -40,6 +40,7 @@ export class AnimalComponent {
     if (this.searchInput.invalid) {
       return;
     }
+    this.searchOneInputs.forEach((formControl: FormControl) => formControl.reset(""));
     this.submitted = true;
     this.communicationService.getAnimalsFromName(this.searchInput.value).subscribe((animals: Animal[]) => {
       this.animalInfos = [];
@@ -57,6 +58,7 @@ export class AnimalComponent {
     if (this.searchOneInputs[0].invalid || this.searchOneInputs[1].invalid) {
       return;
     }
+    this.searchInput.reset("");
     this.submitted = true;
     this.communicationService.getAnimalsFromPk(this.searchOneInputs[0].value, this.searchOneInputs[1].value).subscribe((animal: Animal) => {
       this.animalInfos = [];
