@@ -41,6 +41,18 @@ export class DatabaseService {
         return this.pool.query(`SELECT * FROM VetoDB.${tableName};`);
     }
 
+    public getOwners(): Promise<pg.QueryResult> {
+        this.pool.connect();
+
+        return this.pool.query(`SELECT numProprietaire, nom FROM VetoDB.Proprietaire;`);
+    }
+
+    public getClinics(): Promise<pg.QueryResult> {
+        this.pool.connect();
+
+        return this.pool.query(`SELECT numClinique, nom FROM VetoDB.Clinique;`);
+    }
+
     public getAnimalsLikeName(name: string): Promise<pg.QueryResult> {
         this.pool.connect();
 
