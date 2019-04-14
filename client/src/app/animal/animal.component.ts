@@ -49,7 +49,8 @@ export class AnimalComponent {
   }
 
   protected getAnimalTreatments(animalIndex: number): void {
-    this.communicationService.getTreatments(this.animalInfos[animalIndex].animal.numAnimal,
+    this.communicationService.getTreatments(
+      this.animalInfos[animalIndex].animal.numAnimal,
       this.animalInfos[animalIndex].animal.numClinique)
       .subscribe((treatments: object) => {
         this.animalInfos[animalIndex].treatments = treatments;
@@ -58,7 +59,8 @@ export class AnimalComponent {
   }
 
   protected getAnimalBill(animalIndex: number): void {
-    this.communicationService.getBill(this.animalInfos[animalIndex].animal.numAnimal,
+    this.communicationService.getBill(
+      this.animalInfos[animalIndex].animal.numAnimal,
       this.animalInfos[animalIndex].animal.numClinique)
       .subscribe((bill: object) => {
         this.animalInfos[animalIndex].bill = bill;

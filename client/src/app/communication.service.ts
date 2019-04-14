@@ -14,7 +14,6 @@ export class CommunicationService {
     public constructor (private http: HttpClient) { }
 
     public getAnimalsFromName(name: string): Observable<Animal[]> {
-        console.log("sending");
         return this.http.get<Animal[]>(this.BASE_URL + `/animal/${name}`).pipe(
             catchError(this.handleError<Animal[]>("getAnimals"))
         );
