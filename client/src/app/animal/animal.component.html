@@ -12,6 +12,27 @@
     <mat-icon>add</mat-icon>
   </button>
 </div>
+<div class="bar-top">
+  <form ng-submit="submitOne()">
+    <table>
+      <tr>
+        <td>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Numéro de la clinique" [formControl]="searchOneInputs[0]">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Numéro de l'animal" [formControl]="searchOneInputs[1]">
+            <button mat-button matSuffix (click)="submitOne()" [disabled]="searchOneInputs[0].invalid || searchOneInputs[1].invalid" color="accent">
+              <mat-icon>search</mat-icon>
+            </button>
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
 
 <div *ngIf="submitted">
   <h3>{{animalInfos ? animalInfos.length : 0}} Résultat{{animalInfos && animalInfos.length > 1 ? "s": ""}}</h3>

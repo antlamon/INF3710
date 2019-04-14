@@ -21,6 +21,11 @@ export class CommunicationService {
         );
     }
 
+    public getAnimalsFromPk(numClinique: string, numAnimal: string): Observable<Animal> {
+        return this.http.get<Animal>(this.BASE_URL + `/animal`, {params: {numClinique, numAnimal}}).pipe(
+            catchError(this.handleError<Animal>("getAnimal"))
+        );
+    }
     public getBill(numAnimal: string, numClinique: string): Observable<Bill> {
         return this.http.get<Bill>(this.BASE_URL + "/bill", {params: {numAnimal, numClinique}}).pipe(
             catchError(this.handleError<Bill>("getBill"))

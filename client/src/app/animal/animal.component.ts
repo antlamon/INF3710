@@ -24,10 +24,15 @@ export class AnimalComponent {
   protected displayedColumnsTreatments: string[] = ["numPrescription", "numTraitement", "numExamen", "quantite",
                                                     "dateDebut", "dateFin", "descriptionTraitement", "cout"];
   protected searchInput: FormControl;
+  protected searchOneInputs: FormControl[];
   protected submitted: boolean;
 
   public constructor(private readonly dialog: MatDialog, private readonly communicationService: CommunicationService) {
     this.searchInput = new FormControl("", [Validators.required]);
+    this.searchOneInputs = [];
+    this.searchOneInputs.push(new FormControl("", [Validators.required]));
+    this.searchOneInputs.push(new FormControl("", [Validators.required]));
+
     this.submitted = false;
   }
 
@@ -47,6 +52,25 @@ export class AnimalComponent {
       }
     });
   }
+
+  protected submitOne(): void {
+    if (this.searchOneInputs[0].invalid || this.searchOneInputs[1].invalid) {
+      return;
+    }
+    this.submitted = true;
+    this.communicationService.getAnimalsFromPk(this.searchOneInputs[0].value, this.searchOneInputs[1].value).subscribe((animal: Animal) => {
+      this.animalInfos = [];
+      if (animal) {
+        animal.dateNaissance = new Date(animal.dateNaissance);
+        animal.dateInscription = new Date(animal.dateInscription);
+        this.animalInfos.push({ animal } as AnimalInfo);
+        this.getAnimalTreatments(0);
+        this.getAnimalBill(0);
+      }
+
+    });
+  }
+
   protected openModal(): void {
     this.dialog.open(NewAnimalFormComponent);
   }

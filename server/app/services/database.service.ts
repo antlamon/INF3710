@@ -2,7 +2,7 @@ import { injectable } from "inversify";
 import * as pg from "pg";
 import "reflect-metadata";
 import { Animal } from "../../../common/tables/Animal";
-import {Bill, Treatment} from "../../../common/tables/Bill";
+import { Bill, Treatment } from "../../../common/tables/Bill";
 import { schema } from "../createSchema";
 import { data } from "../populateDB";
 
@@ -70,6 +70,17 @@ export class DatabaseService {
         const client: pg.PoolClient = await this.pool.connect();
 
         const result: pg.QueryResult = await this.pool.query(`SELECT * FROM VetoDB.Animal WHERE nom LIKE '%${name}%';`);
+        client.release();
+
+        return result;
+    }
+
+    public async getAnimalByPk(numClinique: string, numAnimal: string): Promise<pg.QueryResult> {
+        const client: pg.PoolClient = await this.pool.connect();
+
+        const result: pg.QueryResult = await this.pool.query(`
+        SELECT * FROM VetoDB.Animal WHERE numClinique = '${numClinique}' AND numAnimal = '${numAnimal}';
+        `);
         client.release();
 
         return result;
@@ -158,9 +169,11 @@ export class DatabaseService {
                     prix: row.quantite * row.cout,
                 });
             });
-            const totalPrice: number = treatments.reduce((price: number, treatment: any) => {
-                return price + treatment.prix;
-            },                                           0);
+            const totalPrice: number = treatments.reduce(
+                (price: number, treatment: any) => {
+                    return price + treatment.prix;
+                },
+                0);
 
             return { treatments, totalPrice };
         } else { return { totalPrice: 0 } as Bill; }
