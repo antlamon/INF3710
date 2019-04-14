@@ -3,13 +3,15 @@ import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
-  MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatGridListModule,
-  MatIconModule, MatInputModule, MatListModule, MatSidenavModule, MatToolbarModule, MatExpansionModule
+  MatButtonModule, MatCardModule, MatDialogModule, MatDividerModule, MatExpansionModule,
+  MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule,
+  MatSidenavModule, MatToolbarModule, MatSelectModule
 } from "@angular/material";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AnimalComponent } from "./animal/animal.component";
+import { NewAnimalFormComponent } from "./animal/new-animal-form/new-animal-form.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { CommunicationService } from "./communication.service";
@@ -20,6 +22,7 @@ import { HomeComponent } from "./home/home.component";
     AppComponent,
     AnimalComponent,
     HomeComponent,
+    NewAnimalFormComponent,
   ],
   imports: [
     CommonModule,
@@ -41,10 +44,13 @@ import { HomeComponent } from "./home/home.component";
       MatInputModule,
       ReactiveFormsModule,
       FormsModule,
-      MatExpansionModule
+      MatExpansionModule,
+      MatDialogModule,
+      MatSelectModule
     ]
   ],
   providers: [CommunicationService],
   bootstrap: [AppComponent],
+  entryComponents: [NewAnimalFormComponent]
 })
 export class AppModule { }

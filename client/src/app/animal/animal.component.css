@@ -2,12 +2,30 @@ form {
     text-align: center;
 }
 
-mat-form-field {
-    width: 50%;
+.bar-top {
+    width: 100%;
     margin-top: 4%;
+    text-align: center;
 }
 
 .mat-expansion-panel-header-title, 
 .mat-expansion-panel-header-description {
   flex: 1;
+}
+
+button.mat-raised-button, form {
+  display: inline-block;
+}
+
+form {
+  width: 40%;
+  margin-right: 20px
+}
+
+mat-form-field {
+  width: 100%
+}
+
+button.mat-raised-button mat-icon {
+  margin-left: 5px;
 }

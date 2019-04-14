@@ -3,6 +3,8 @@ import { FormControl, Validators } from "@angular/forms";
 
 import { Animal } from "../../../../common/tables/Animal";
 import { CommunicationService } from "../communication.service";
+import { MatDialog } from "@angular/material";
+import { NewAnimalFormComponent } from "./new-animal-form/new-animal-form.component";
 
 @Component({
   selector: "app-animal",
@@ -14,7 +16,7 @@ export class AnimalComponent {
   protected searchInput: FormControl;
   protected submitted: boolean;
 
-  public constructor (public readonly communicationService: CommunicationService) {
+  public constructor (private readonly dialog: MatDialog, private readonly communicationService: CommunicationService) {
     this.searchInput = new FormControl("", [Validators.required]);
     this.submitted = false;
   }
@@ -32,5 +34,8 @@ export class AnimalComponent {
       });
       console.log(animals);
     });
+  }
+  protected openModal(): void {
+    this.dialog.open(NewAnimalFormComponent);
   }
 }
