@@ -1,11 +1,17 @@
-<form ng-submit="submit()">
-  <mat-form-field>
-    <input type="text" matInput placeholder="Nom de l'animal" [formControl]="searchInput">
-    <button mat-button matSuffix (click)="submit()" [disabled]="searchInput.invalid" color="accent">
-      <mat-icon>search</mat-icon>
-    </button>
-  </mat-form-field>
-</form>
+<div class="bar-top">
+  <form ng-submit="submit()">
+    <mat-form-field>
+      <input type="text" matInput placeholder="Nom de l'animal" [formControl]="searchInput">
+      <button mat-button matSuffix (click)="submit()" [disabled]="searchInput.invalid" color="accent">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
+  <button mat-raised-button color="primary" (click)="openModal()">
+    <span>Ajouter</span>
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
 
 <div *ngIf="submitted">
   <h3>{{animalInfos ? animalInfos.length : 0}} Résultat{{animalInfos && animalInfos.length > 1 ? "s": ""}}</h3>
@@ -15,7 +21,7 @@
     <mat-expansion-panel *ngFor="let info of animalInfos">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{info.animal.nom}} - {{info.animal.numAnimal}}
+          {{info.animal.numAnimal}} - {{info.animal.nom}}
         </mat-panel-title>
         <mat-panel-description>
           Clinique : {{info.animal.numClinique}} - Propriétaire : {{info.animal.numProprietaire}}

@@ -5,8 +5,8 @@ import { AnimalComponent } from "./animal/animal.component";
 import { HomeComponent } from "./home/home.component";
 
 const routes: Routes = [
-  { path: "", redirectTo: "acceuil", pathMatch: "full" },
-  { path: "acceuil", component: HomeComponent },
+  { path: "", redirectTo: "accueil", pathMatch: "full" },
+  { path: "accueil", component: HomeComponent },
   { path: "animal", component: AnimalComponent },
 ];
 
