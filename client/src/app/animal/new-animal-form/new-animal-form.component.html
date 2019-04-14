@@ -1,13 +1,64 @@
-<form [formGroup]="animalForm" ng-submit="submit()">
-  <mat-form-field>
-    <mat-label>Clinique</mat-label>
-    <mat-select formControlName="clinique">
-      <mat-option value="A">
-        A
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <button mat-butto color="accent" (click)="submit()">
-    Ajouter
-  </button>
-</form>
+<mat-horizontal-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="clinicForm">
+    <form [formGroup]="clinicForm">
+      <ng-template matStepLabel>Sélectionnez une clinique</ng-template>
+      <mat-form-field>
+        <mat-label>Clinique</mat-label>
+        <mat-select formControlName="clinic" (selectionChange)="fetchOwners()">
+          <mat-option *ngFor="let clinic of clinics" value="{{clinic.numclinique}}">
+            {{clinic.numclinique}} - {{clinic.nom}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <button mat-button color="accent" matStepperNext [disabled]="clinicForm.invalid">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="ownerForm">
+    <form [formGroup]="ownerForm">
+      <ng-template matStepLabel>Sélectionner le propriétaire</ng-template>
+      <mat-form-field>
+        <mat-label>Propriétaire</mat-label>
+        <mat-select formControlName="owner">
+          <mat-option *ngFor="let owner of owners" value="{{owner.numproprietaire}}">
+            {{owner.numproprietaire}} - {{owner.nom}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <button mat-button color="accent" matStepperPrevious>Back</button>
+        <button mat-button color="accent" matStepperNext [disabled]="ownerForm.invalid">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <form [formGroup]="animalForm" ng-submit="submit()">
+      <mat-form-field>
+        <ng-template matStepLabel>Entrez les informations de l'animal</ng-template>
+        <input type="text" matInput placeholder="numéro de l'animal" formControlName="numAnimal">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" matInput placeholder="nom de l'animal" formControlName="nom">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" matInput placeholder="type d'animal" formControlName="type">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" matInput placeholder="description de l'animal" formControlName="description">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" matInput placeholder="Date de naissance de l'animal" formControlName="dateNaissance">
+      </mat-form-field>
+      <mat-form-field>
+        <input type="text" matInput placeholder="État de l'animal" formControlName="etat">
+      </mat-form-field>
+      <div>
+        <button mat-button color="accent" matStepperPrevious>Back</button>
+        <button type="submit" mat-button color="accent" (click)="submit()"
+          [disabled]="animalForm.invalid">Ajouter</button>
+      </div>
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>

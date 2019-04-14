@@ -9,7 +9,7 @@ import Types from "../types";
 
 @injectable()
 export class DatabaseController {
-    public constructor(@inject(Types.DatabaseService) private databaseService: DatabaseService) { }
+    public constructor (@inject(Types.DatabaseService) private databaseService: DatabaseService) { }
 
     public get router(): Router {
         const router: Router = Router();

@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
   MatButtonModule, MatCardModule, MatDialogModule, MatDividerModule, MatExpansionModule,
   MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule,
-  MatSidenavModule, MatToolbarModule, MatSelectModule
+  MatSidenavModule, MatToolbarModule, MatSelectModule, MatStepperModule
 } from "@angular/material";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -46,7 +46,8 @@ import { HomeComponent } from "./home/home.component";
       FormsModule,
       MatExpansionModule,
       MatDialogModule,
-      MatSelectModule
+      MatSelectModule,
+      MatStepperModule
     ]
   ],
   providers: [CommunicationService],
