@@ -6,3 +6,8 @@ mat-form-field {
     width: 50%;
     margin-top: 4%;
 }
+
+.mat-expansion-panel-header-title, 
+.mat-expansion-panel-header-description {
+  flex: 1;
+}

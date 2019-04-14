@@ -44,7 +44,7 @@ export class DatabaseController {
                     const animals: Animal[] = result.rows.map((an: any) => (
                         {
                             numAnimal: an.numanimal,
-                            numProprietaire: an.numaroprietaire,
+                            numProprietaire: an.numproprietaire,
                             numClinique: an.numclinique,
                             nom: an.nom,
                             type: an.type,

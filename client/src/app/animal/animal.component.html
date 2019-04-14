@@ -10,7 +10,26 @@
 <div *ngIf="submitted">
   <h3>{{animals ? animals.length : 0}} Résultat{{animals && animals.length > 1 ? "s": ""}}</h3>
   <mat-divider></mat-divider>
-  <mat-action-list>
+
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let animal of animals">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{animal.nom}} - {{animal.numAnimal}}
+        </mat-panel-title>
+        <mat-panel-description>
+          Clinique : {{animal.numClinique}} - Propriétaire : {{animal.numProprietaire}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p>Date de naissance : {{animal.dateNaissance}}</p>
+      <p>Date d'inscription : {{animal.dateInscription}}</p>
+      <p>Type : {{animal.type}}</p>
+      <p>Description : {{animal.description}}</p>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+
+  <!-- <mat-action-list>
     <button mat-list-item *ngFor="let animal of animals">
       <mat-icon mat-list-icon>pets</mat-icon>
       <h4 mat-line>{{animal.nom}}</h4>
@@ -18,5 +37,5 @@
       <button>Générer Facture</button>
       <button>Visualiser Traitement</button>
     </button>
-  </mat-action-list>
+  </mat-action-list> -->
 </div>

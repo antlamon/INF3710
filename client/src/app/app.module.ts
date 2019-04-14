@@ -4,7 +4,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
   MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatGridListModule,
-  MatIconModule, MatInputModule, MatListModule, MatSidenavModule, MatToolbarModule
+  MatIconModule, MatInputModule, MatListModule, MatSidenavModule, MatToolbarModule, MatExpansionModule
 } from "@angular/material";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -40,7 +40,8 @@ import { HomeComponent } from "./home/home.component";
       MatFormFieldModule,
       MatInputModule,
       ReactiveFormsModule,
-      FormsModule
+      FormsModule,
+      MatExpansionModule
     ]
   ],
   providers: [CommunicationService],
