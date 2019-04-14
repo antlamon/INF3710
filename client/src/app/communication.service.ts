@@ -27,11 +27,12 @@ export class CommunicationService {
         );
     }
 
-    public getTreatments(numAnimal: string, numClinique: string): Observable<PrescriptionTreatment> {
-        return this.http.get<PrescriptionTreatment>(this.BASE_URL + "/treatments", {params: {numAnimal, numClinique}}).pipe(
-            catchError(this.handleError<PrescriptionTreatment>("getTreatments"))
+    public getTreatments(numAnimal: string, numClinique: string): Observable<PrescriptionTreatment[]> {
+        return this.http.get<PrescriptionTreatment[]>(this.BASE_URL + "/treatments", {params: {numAnimal, numClinique}}).pipe(
+            catchError(this.handleError<PrescriptionTreatment[]>("getTreatments"))
         );
     }
+
     public getAllClinics(): Observable<ClinicSimple[]> {
         return this.http.get<ClinicSimple[]>(this.BASE_URL + `/clinics`).pipe(
             catchError(this.handleError<ClinicSimple[]>("getClinics"))

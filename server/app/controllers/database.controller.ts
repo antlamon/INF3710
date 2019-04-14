@@ -3,6 +3,7 @@ import { inject, injectable } from "inversify";
 import * as pg from "pg";
 
 import { Animal } from "../../../common/tables/Animal";
+import { PrescriptionTreatment } from "../../../common/tables/PrescriptionTraitement";
 
 import { DatabaseService } from "../services/database.service";
 import Types from "../types";
@@ -124,7 +125,17 @@ export class DatabaseController {
                 const numAnimal: string = req.query.numAnimal;
                 const numClinique: string = req.query.numClinique;
                 this.databaseService.getTreatmentsFromAnimal(numAnimal, numClinique).then((result: pg.QueryResult) => {
-                    res.json(result.rows);
+                    const pTs: PrescriptionTreatment[] = result.rows.map((row: any) => ({
+                            numPrescription: row.numprescription,
+                            numTraitement: row.numtraitement,
+                            numExamen: row.numexamen,
+                            quantite: row.quantite,
+                            dateDebut: row.datedebut,
+                            dateFin: row.datefin,
+                            descriptionTraitement: row.descriptiontraitement,
+                            cout: row.cout,
+                    }));
+                    res.json(pTs);
                 }).catch((e: Error) => {
                     console.error(e.stack);
                     res.json(-1);

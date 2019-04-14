@@ -10,7 +10,7 @@ import { NewAnimalFormComponent } from "./new-animal-form/new-animal-form.compon
 interface AnimalInfo {
   animal: Animal;
   bill: Bill;
-  treatments: PrescriptionTreatment;
+  treatments: PrescriptionTreatment[];
 }
 
 @Component({
@@ -20,11 +20,13 @@ interface AnimalInfo {
 })
 export class AnimalComponent {
   protected animalInfos: AnimalInfo[] = [];
-  protected displayedColumns: string[] = ["traitement", "quantite", "cout"];
+  protected displayedColumnsBill: string[] = ["numTraitement", "quantite", "cout"];
+  protected displayedColumnsTreatments: string[] = ["numPrescription", "numTraitement", "numExamen", "quantite",
+                                                    "dateDebut", "dateFin", "descriptionTraitement", "cout"];
   protected searchInput: FormControl;
   protected submitted: boolean;
 
-  public constructor (private readonly dialog: MatDialog, private readonly communicationService: CommunicationService) {
+  public constructor(private readonly dialog: MatDialog, private readonly communicationService: CommunicationService) {
     this.searchInput = new FormControl("", [Validators.required]);
     this.submitted = false;
   }
@@ -53,7 +55,11 @@ export class AnimalComponent {
     this.communicationService.getTreatments(
       this.animalInfos[animalIndex].animal.numAnimal,
       this.animalInfos[animalIndex].animal.numClinique)
-      .subscribe((treatments: PrescriptionTreatment) => {
+      .subscribe((treatments: PrescriptionTreatment[]) => {
+        treatments.forEach((treatment: PrescriptionTreatment) => {
+          treatment.dateDebut = new Date(treatment.dateDebut);
+          treatment.dateFin = new Date(treatment.dateFin);
+        });
         this.animalInfos[animalIndex].treatments = treatments;
       });
   }
