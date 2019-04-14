@@ -41,10 +41,16 @@ export class DatabaseService {
         return this.pool.query(`SELECT * FROM VetoDB.${tableName};`);
     }
 
-    public getOwners(): Promise<pg.QueryResult> {
+    public getOwners(numClinique: string): Promise<pg.QueryResult> {
         this.pool.connect();
+        let query: string = `SELECT numProprietaire, nom FROM VetoDB.Proprietaire`;
+        if (numClinique) {
+            query += ` WHERE numClinique = '${numClinique}';`;
+        } else {
+            query += ';';
+        }
 
-        return this.pool.query(`SELECT numProprietaire, nom FROM VetoDB.Proprietaire;`);
+        return this.pool.query(query);
     }
 
     public getClinics(): Promise<pg.QueryResult> {
