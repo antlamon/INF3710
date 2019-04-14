@@ -23,7 +23,7 @@ export class AnimalComponent {
   protected animalInfos: AnimalInfo[] = [];
   protected displayedColumnsBill: string[] = ["numTraitement", "quantite", "cout"];
   protected displayedColumnsTreatments: string[] = ["numPrescription", "numTraitement", "numExamen", "quantite",
-    "dateDebut", "dateFin", "descriptionTraitement", "cout"];
+                                                    "dateDebut", "dateFin", "descriptionTraitement", "cout"];
   protected searchInput: FormControl;
   protected searchOneInputs: FormControl[];
   protected submitted: boolean;
