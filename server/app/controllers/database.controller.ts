@@ -9,7 +9,7 @@ import Types from "../types";
 
 @injectable()
 export class DatabaseController {
-    public constructor (@inject(Types.DatabaseService) private databaseService: DatabaseService) { }
+    public constructor(@inject(Types.DatabaseService) private databaseService: DatabaseService) { }
 
     public get router(): Router {
         const router: Router = Router();
@@ -31,6 +31,26 @@ export class DatabaseController {
                 this.databaseService.populateDb().then((result: pg.QueryResult) => {
                     console.log("CECI EST UNE FONCTION DE TEST SEULEMENT");
                     res.json(result);
+                }).catch((e: Error) => {
+                    console.error(e.stack);
+                });
+            });
+
+        router.get(
+            "/owners",
+            (req: Request, res: Response, next: NextFunction) => {
+                this.databaseService.getOwners().then((result: pg.QueryResult) => {
+                    res.json(result.rows);
+                }).catch((e: Error) => {
+                    console.error(e.stack);
+                });
+            });
+
+        router.get(
+            "/clinics",
+            (req: Request, res: Response, next: NextFunction) => {
+                this.databaseService.getClinics().then((result: pg.QueryResult) => {
+                    res.json(result.rows);
                 }).catch((e: Error) => {
                     console.error(e.stack);
                 });
