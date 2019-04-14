@@ -56,10 +56,39 @@ export class DatabaseService {
             animal.etat
         ];
 
-        const queryText: string = `INSERT INTO VetoDB.ANIMAL VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`;
+        const queryText: string = `INSERT INTO VetoDB.ANIMAL VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`;
 
         return this.pool.query(queryText, values);
     }
+
+    public deleteAnimal(numAnimal: string, numClinique: string): Promise<pg.QueryResult> {
+        this.pool.connect();
+
+        return this.pool.query(`DELETE FROM VetoDB.Animal WHERE numAnimal = \'${numAnimal}\' AND numClinique = \'${numClinique}\';`);
+    }
+
+    public updateAnimal(numAnimal: string, numClinique: string, newParams: object): Promise<pg.QueryResult> {
+        this.pool.connect();
+        let query: string = `UPDATE VetoDB.Animal \n`;
+        const keys: string[] = Object.keys(newParams);
+        if (keys.length > 0) {
+            query = query.concat(`SET ${keys[0]} = \'${newParams[keys[0]]}\'`);
+        }
+
+        // On enleve le premier element
+        keys.shift();
+
+        // tslint:disable-next-line:forin
+        for (const param in keys) {
+            const value: string = keys[param];
+            query = query.concat(`, ${value} = \'${newParams[value]}\'`);
+        }
+
+        query = query.concat(`\nWHERE numAnimal = \'${numAnimal}\' AND numClinique = \'${numClinique}\';`);
+
+        return this.pool.query(query);
+    }
+
     // HOTEL
     public getHotels(): Promise<pg.QueryResult> {
         this.pool.connect();

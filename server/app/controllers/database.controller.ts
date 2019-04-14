@@ -37,7 +37,7 @@ export class DatabaseController {
         });
 
         router.post("/animal",
-                    (req: Request, res: Response, nect: NextFunction) => {
+                    (req: Request, res: Response, next: NextFunction) => {
                     const animal: Animal = req.body;
                     this.databaseService.createAnimal(animal).then((result: pg.QueryResult) => {
                         res.json(result.rowCount);
@@ -45,6 +45,28 @@ export class DatabaseController {
                         console.error(e.stack);
                         res.json(-1);
                     });
+        });
+
+        router.delete("/animal",
+                      (req: Request, res: Response, next: NextFunction) => {
+                    const numAnimal: string = req.query.numAnimal;
+                    const numClinique: string = req.query.numClinique;
+                    this.databaseService.deleteAnimal(numAnimal, numClinique).then((result: pg.QueryResult) => {
+                        res.json(result.rowCount);
+                    }).catch((error: Error) => {
+                        res.json(-1);
+                    });
+        });
+
+        router.put("/animal",
+                   (req: Request, res: Response, next: NextFunction) => {
+            const numAnimal: string = req.query.numAnimal;
+            const numClinique: string = req.query.numClinique;
+            this.databaseService.updateAnimal(numAnimal, numClinique, req.body).then((result: pg.QueryResult) => {
+                res.json(result.rowCount);
+            }).catch((error: Error) => {
+                res.json(-1);
+            });
         });
 
         router.get("/hotel",
