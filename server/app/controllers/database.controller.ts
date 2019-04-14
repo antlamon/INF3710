@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import { inject, injectable } from "inversify";
 import * as pg from "pg";
 
+import { Animal } from "../../../common/tables/Animal";
 import {Hotel} from "../../../common/tables/Hotel";
 import {Room} from '../../../common/tables/Room';
 
@@ -33,6 +34,53 @@ export class DatabaseController {
                     }).catch((e: Error) => {
                         console.error(e.stack);
                     });
+        });
+
+        router.post("/animal",
+                    (req: Request, res: Response, next: NextFunction) => {
+                    const animal: Animal = req.body;
+                    this.databaseService.createAnimal(animal).then((result: pg.QueryResult) => {
+                        res.json(result.rowCount);
+                    }).catch((e: Error) => {
+                        console.error(e.stack);
+                        res.json(-1);
+                    });
+        });
+
+        router.delete("/animal",
+                      (req: Request, res: Response, next: NextFunction) => {
+                    const numAnimal: string = req.query.numAnimal;
+                    const numClinique: string = req.query.numClinique;
+                    this.databaseService.deleteAnimal(numAnimal, numClinique).then((result: pg.QueryResult) => {
+                        res.json(result.rowCount);
+                    }).catch((e: Error) => {
+                        console.error(e.stack);
+                        res.json(-1);
+                    });
+        });
+
+        router.put("/animal",
+                   (req: Request, res: Response, next: NextFunction) => {
+            const numAnimal: string = req.query.numAnimal;
+            const numClinique: string = req.query.numClinique;
+            this.databaseService.updateAnimal(numAnimal, numClinique, req.body).then((result: pg.QueryResult) => {
+                res.json(result.rowCount);
+            }).catch((e: Error) => {
+                console.error(e.stack);
+                res.json(-1);
+            });
+        });
+
+        router.get("/treatments",
+                   (req: Request, res: Response, next: NextFunction) => {
+            const numAnimal: string = req.query.numAnimal;
+            const numClinique: string = req.query.numClinique;
+            this.databaseService.getTreatmentsFromAnimal(numAnimal, numClinique).then((result: pg.QueryResult) => {
+                res.json(result.rowCount);
+            }).catch((e: Error) => {
+                console.error(e.stack);
+                res.json(-1);
+            });
         });
 
         router.get("/hotel",
