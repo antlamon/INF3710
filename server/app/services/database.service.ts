@@ -89,6 +89,17 @@ export class DatabaseService {
         return this.pool.query(query);
     }
 
+    public getTreatmentsFromAnimal(numAnimal: string, numClinique: string): Promise<pg.QueryResult> {
+        this.pool.connect();
+        const query: string = `
+        SELECT *
+        FROM VetoDB.Animal Natural JOIN VetoDB.Prescription JOIN VetoDB.Traitement
+        ON Traitement.numTraitement = Prescription.numTraitement
+        WHERE numAnimal = '${numAnimal}' AND numClinique = '${numClinique}';`;
+
+        return this.pool.query(query);
+    }
+
     // HOTEL
     public getHotels(): Promise<pg.QueryResult> {
         this.pool.connect();
