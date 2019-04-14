@@ -92,8 +92,8 @@ export class NewAnimalFormComponent implements OnInit {
         this.dialogRef.close(success);
       });
     } else {
-      this.communicationService.putAnimal(animal).subscribe((success) => {
-        this.dialogRef.close(animal);
+      this.communicationService.putAnimal(animal).subscribe((success: number) => {
+        this.dialogRef.close(success === 1 ? animal : null);
       });
     }
   }

@@ -83,7 +83,7 @@ export class AnimalComponent {
         this.matSnackBar.open("Animal ajouté", "Ok", {
           duration: 2000,
         });
-      } else {
+      } else if (success === -1) {
         this.matSnackBar.open("Une erreur est survenue dans la base de donnée", "Ok", {
           duration: 2000,
         });
@@ -100,7 +100,7 @@ export class AnimalComponent {
         this.matSnackBar.open("Modifications apportées", "Ok", {
           duration: 2000,
         });
-      } else {
+      } else if (animalM === null) {
         this.matSnackBar.open("Une erreur est survenue dans la base de donnée", "Ok", {
           duration: 2000,
         });
