@@ -29,7 +29,6 @@ export class NewAnimalFormComponent implements OnInit {
     this.clinics = [];
     this.owners = [];
     this.newAnimal = !this.data;
-    console.log(this.data ? this.data.numProprietaire : "NO")
     this.clinicForm = new FormGroup({
       clinic: new FormControl(this.data ? this.data.numClinique : "", [Validators.required]),
     });
@@ -90,12 +89,10 @@ export class NewAnimalFormComponent implements OnInit {
 
     if (this.newAnimal) {
       this.communicationService.postAnimal(animal).subscribe((success: number) => {
-        console.log(success);
-        this.dialogRef.close();
+        this.dialogRef.close(success);
       });
     } else {
       this.communicationService.putAnimal(animal).subscribe((success) => {
-        console.log(success);
         this.dialogRef.close(animal);
       });
     }
