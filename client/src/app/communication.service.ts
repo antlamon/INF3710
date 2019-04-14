@@ -15,25 +15,45 @@ export class CommunicationService {
     private readonly BASE_URL: string = "http://localhost:3000/database";
     public constructor (private http: HttpClient) { }
 
+    public postAnimal(animal: Animal): Observable<number> {
+        return this.http.post<number>(this.BASE_URL + "/animal", animal).pipe(
+            catchError(this.handleError<number>("postAnimal"))
+        );
+    }
+
+    public putAnimal(animal: Animal): Observable<number> {
+        return this.http.put<number>(
+            this.BASE_URL + "/animal", animal,
+            { params: { numClinique: animal.numClinique, numAnimal: animal.numAnimal } }).pipe(
+                catchError(this.handleError<number>("putAnimal"))
+            );
+    }
+
     public getAnimalsFromName(name: string): Observable<Animal[]> {
         return this.http.get<Animal[]>(this.BASE_URL + `/animal/${name}`).pipe(
             catchError(this.handleError<Animal[]>("getAnimals"))
         );
     }
 
+    public deleteAnimal(numAnimal: string, numClinique: string): Observable<number> {
+        return this.http.delete<number>(this.BASE_URL + "/animal", { params: { numAnimal, numClinique } }).pipe(
+            catchError(this.handleError<number>("getAnimals"))
+        );
+    }
+
     public getAnimalsFromPk(numClinique: string, numAnimal: string): Observable<Animal> {
-        return this.http.get<Animal>(this.BASE_URL + `/animal`, {params: {numClinique, numAnimal}}).pipe(
+        return this.http.get<Animal>(this.BASE_URL + `/animal`, { params: { numClinique, numAnimal } }).pipe(
             catchError(this.handleError<Animal>("getAnimal"))
         );
     }
     public getBill(numAnimal: string, numClinique: string): Observable<Bill> {
-        return this.http.get<Bill>(this.BASE_URL + "/bill", {params: {numAnimal, numClinique}}).pipe(
+        return this.http.get<Bill>(this.BASE_URL + "/bill", { params: { numAnimal, numClinique } }).pipe(
             catchError(this.handleError<Bill>("getBill"))
         );
     }
 
     public getTreatments(numAnimal: string, numClinique: string): Observable<PrescriptionTreatment[]> {
-        return this.http.get<PrescriptionTreatment[]>(this.BASE_URL + "/treatments", {params: {numAnimal, numClinique}}).pipe(
+        return this.http.get<PrescriptionTreatment[]>(this.BASE_URL + "/treatments", { params: { numAnimal, numClinique } }).pipe(
             catchError(this.handleError<PrescriptionTreatment[]>("getTreatments"))
         );
     }

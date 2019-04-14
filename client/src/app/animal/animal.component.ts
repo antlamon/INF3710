@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
-import { MatDialog } from "@angular/material";
+import { MatDialog, MatDialogConfig, MatSnackBar } from "@angular/material";
+
 import { Animal } from "../../../../common/tables/Animal";
 import { Bill } from "../../../../common/tables/Bill";
 import { PrescriptionTreatment } from "../../../../common/tables/PrescriptionTraitement";
@@ -22,12 +23,15 @@ export class AnimalComponent {
   protected animalInfos: AnimalInfo[] = [];
   protected displayedColumnsBill: string[] = ["numTraitement", "quantite", "cout"];
   protected displayedColumnsTreatments: string[] = ["numPrescription", "numTraitement", "numExamen", "quantite",
-                                                    "dateDebut", "dateFin", "descriptionTraitement", "cout"];
+    "dateDebut", "dateFin", "descriptionTraitement", "cout"];
   protected searchInput: FormControl;
   protected searchOneInputs: FormControl[];
   protected submitted: boolean;
 
-  public constructor(private readonly dialog: MatDialog, private readonly communicationService: CommunicationService) {
+  public constructor (
+    private readonly dialog: MatDialog,
+    private readonly communicationService: CommunicationService,
+    private readonly matSnackBar: MatSnackBar) {
     this.searchInput = new FormControl("", [Validators.required]);
     this.searchOneInputs = [];
     this.searchOneInputs.push(new FormControl("", [Validators.required]));
@@ -74,7 +78,49 @@ export class AnimalComponent {
   }
 
   protected openModal(): void {
-    this.dialog.open(NewAnimalFormComponent);
+    this.dialog.open(NewAnimalFormComponent).afterClosed().subscribe((success: number) => {
+      if (success === 1) {
+        this.matSnackBar.open("Animal ajouté", "Ok", {
+          duration: 2000,
+        });
+      } else {
+        this.matSnackBar.open("Une erreur est survenue dans la base de donnée", "Ok", {
+          duration: 2000,
+        });
+      }
+    });
+  }
+
+  protected editAnimal(animal: Animal, i: number): void {
+    const config: MatDialogConfig = new MatDialogConfig();
+    config.data = animal;
+    this.dialog.open(NewAnimalFormComponent, config).afterClosed().subscribe((animalM: Animal) => {
+      if (animalM) {
+        this.animalInfos[i].animal = animalM;
+        this.matSnackBar.open("Modifications apportées", "Ok", {
+          duration: 2000,
+        });
+      } else {
+        this.matSnackBar.open("Une erreur est survenue dans la base de donnée", "Ok", {
+          duration: 2000,
+        });
+      }
+    });
+  }
+
+  protected deleteAnimal(numAnimal: string, numClinique: string, i: number): void {
+    this.communicationService.deleteAnimal(numAnimal, numClinique).subscribe((success: number) => {
+      if (success) {
+        this.animalInfos.splice(i, 1);
+        this.matSnackBar.open("Animal supprimé", "Ok", {
+          duration: 2000,
+        });
+      } else {
+        this.matSnackBar.open("Une erreur est survenue dans la base de donnée", "Ok", {
+          duration: 2000,
+        });
+      }
+    });
   }
 
   protected getAnimalTreatments(animalIndex: number): void {

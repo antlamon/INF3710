@@ -3,10 +3,10 @@ import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
-  MatButtonModule, MatCardModule, MatDialogModule, MatDividerModule, MatExpansionModule,
-  MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatListModule,
-  MatSelectModule, MatSidenavModule, MatStepperModule, MatTableModule, MatTabsModule,
-  MatToolbarModule
+  MatButtonModule, MatCardModule, MatDatepickerModule, MatDialogModule, MatDividerModule,
+  MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule,
+  MatListModule, MatNativeDateModule, MatSelectModule, MatSidenavModule, MatSnackBarModule,
+  MatStepperModule, MatTableModule, MatTabsModule, MatToolbarModule
 } from "@angular/material";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -50,7 +50,10 @@ import { HomeComponent } from "./home/home.component";
       MatSelectModule,
       MatStepperModule,
       MatTabsModule,
-      MatTableModule
+      MatTableModule,
+      MatDatepickerModule,
+      MatNativeDateModule,
+      MatSnackBarModule
     ]
   ],
   providers: [CommunicationService],
