@@ -39,7 +39,8 @@ export class DatabaseController {
         router.get(
             "/owners",
             (req: Request, res: Response, next: NextFunction) => {
-                this.databaseService.getOwners().then((result: pg.QueryResult) => {
+                const numClinique: string = req.query.numClinique;
+                this.databaseService.getOwners(numClinique).then((result: pg.QueryResult) => {
                     res.json(result.rows);
                 }).catch((e: Error) => {
                     console.error(e.stack);
