@@ -1,13 +1,15 @@
-<!--The content below is only a placeholder and can be replaced.-->
-
-
-
-<nav class="navbar navbar-dark bg-dark mb-5">
-  <a class="navbar-brand title" href="/">INF3710-TP5</a>
-  <div class="navbar-expand mr-auto">
-    <div class="navbar-nav">
-      <a class="nav-item nav-link active" routerLink="/animal">Animals</a>
-    </div>
-  </div>
-</nav>
-<router-outlet></router-outlet>
+<mat-sidenav-container>
+  <mat-sidenav opened mode="side">
+    <h2 mat-subheader>Navigation</h2>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/acceuil">
+        <mat-icon>home</mat-icon><span>Acceuil</span>
+      </a>
+      <a mat-list-item routerLink="/animal">
+        <mat-icon>pets</mat-icon><span>Animals</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-toolbar color="primary"><span>VetoSansFrontieres</span></mat-toolbar>
+  <router-outlet></router-outlet>
+</mat-sidenav-container>

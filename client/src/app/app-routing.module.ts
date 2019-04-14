@@ -2,10 +2,11 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
 import { AnimalComponent } from "./animal/animal.component";
-import { AppComponent } from "./app.component";
+import { HomeComponent } from "./home/home.component";
 
 const routes: Routes = [
-  { path: "app", component: AppComponent },
+  { path: "", redirectTo: "acceuil", pathMatch: "full" },
+  { path: "acceuil", component: HomeComponent },
   { path: "animal", component: AnimalComponent },
 ];
 

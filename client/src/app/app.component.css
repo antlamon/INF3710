@@ -13,3 +13,15 @@
 .title {
     color: red;
   }
+
+mat-sidenav-container {
+    height: 100%;
+}
+
+mat-sidenav {
+    width: 15%;
+}
+
+span {
+    margin: auto;
+}
