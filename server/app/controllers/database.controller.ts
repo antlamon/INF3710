@@ -3,8 +3,8 @@ import { inject, injectable } from "inversify";
 import * as pg from "pg";
 
 import { Animal } from "../../../common/tables/Animal";
-import { Hotel } from "../../../common/tables/Hotel";
 import { Room } from '../../../common/tables/Room';
+import { Hotel } from '../../../common/tables/Hotel';
 
 import { DatabaseService } from "../services/database.service";
 import Types from "../types";
@@ -40,17 +40,17 @@ export class DatabaseController {
             (req: Request, res: Response, next: NextFunction) => {
                 // Send the request to the service and send the response
                 this.databaseService.getAnimalsLikeName(req.params.name).then((result: pg.QueryResult) => {
-                    const animals: Animal[] = result.rows.map((hot: any) => (
+                    const animals: Animal[] = result.rows.map((an: any) => (
                         {
-                            numAnimal: hot.numAnimal,
-                            numProprietaire: hot.numProprietaire,
-                            numClinique: hot.numClinique,
-                            nom: hot.nom,
-                            type: hot.type,
-                            description: hot.description,
-                            dateNaissance: hot.dateNaissance,
-                            dateInscription: hot.dateInscription,
-                            etat: hot.etat
+                            numAnimal: an.numAnimal,
+                            numProprietaire: an.numProprietaire,
+                            numClinique: an.numClinique,
+                            nom: an.nom,
+                            type: an.type,
+                            description: an.description,
+                            dateNaissance: an.dateNaissance,
+                            dateInscription: an.dateInscription,
+                            etat: an.etat
                         }));
                     res.json(animals);
                 }).catch((e: Error) => {
@@ -105,15 +105,15 @@ export class DatabaseController {
                 });
             });
 
-        router.get("/hotel",
+        router.get("/anel",
             (req: Request, res: Response, next: NextFunction) => {
                 // Send the request to the service and send the response
                 this.databaseService.getHotels().then((result: pg.QueryResult) => {
-                    const hotels: Hotel[] = result.rows.map((hot: any) => (
+                    const hotels: Hotel[] = result.rows.map((an: any) => (
                         {
-                            hotelno: hot.hotelno,
-                            hotelname: hot.hotelname,
-                            city: hot.city
+                            hotelno: an.anelno,
+                            hotelname: an.anelname,
+                            city: an.city
                         }));
                     res.json(hotels);
                 }).catch((e: Error) => {
@@ -121,22 +121,22 @@ export class DatabaseController {
                 });
             });
 
-        router.get("/hotel/hotelNo",
+        router.get("/anel/anelNo",
             (req: Request, res: Response, next: NextFunction) => {
                 this.databaseService.getHotelNo().then((result: pg.QueryResult) => {
-                    const hotelPKs: string[] = result.rows.map((row: any) => row.hotelno);
-                    res.json(hotelPKs);
+                    const anelPKs: string[] = result.rows.map((row: any) => row.anelno);
+                    res.json(anelPKs);
                 }).catch((e: Error) => {
                     console.error(e.stack);
                 });
             });
 
-        router.post("/hotel/insert",
+        router.post("/anel/insert",
             (req: Request, res: Response, next: NextFunction) => {
-                const hotelNo: string = req.body.hotelNo;
-                const hotelName: string = req.body.hotelName;
+                const anelNo: string = req.body.anelNo;
+                const anelName: string = req.body.anelName;
                 const city: string = req.body.city;
-                this.databaseService.createHotel(hotelNo, hotelName, city).then((result: pg.QueryResult) => {
+                this.databaseService.createHotel(anelNo, anelName, city).then((result: pg.QueryResult) => {
                     res.json(result.rowCount);
                 }).catch((e: Error) => {
                     console.error(e.stack);
@@ -147,7 +147,7 @@ export class DatabaseController {
         router.get("/rooms",
             (req: Request, res: Response, next: NextFunction) => {
 
-                // this.databaseService.getRoomFromHotel(req.query.hotelNo, req.query.roomType, req.query.price)
+                // this.databaseService.getRoomFromanel(req.query.anelNo, req.query.roomType, req.query.price)
                 this.databaseService.getRoomFromHotelParams(req.query)
                     .then((result: pg.QueryResult) => {
                         const rooms: Room[] = result.rows.map((room: Room) => (

@@ -6,3 +6,17 @@
     </button>
   </mat-form-field>
 </form>
+
+<div *ngIf="submitted">
+  <h3>{{animals ? animals.length : 0}} Résultat{{animals && animals.length > 1 ? "s": ""}}</h3>
+  <mat-divider></mat-divider>
+  <mat-action-list>
+    <button mat-list-item *ngFor="let animal of animals">
+      <mat-icon mat-list-icon>pets</mat-icon>
+      <h4 mat-line>{{animal.nom}}</h4>
+      <p mat-line> {{animal.etat}} </p>
+      <button>Générer Facture</button>
+      <button>Visualiser Traitement</button>
+    </button>
+  </mat-action-list>
+</div>

@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 // tslint:disable-next-line:ordered-imports
-import { of, Observable, Subject } from "rxjs";
+import { of, Observable } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { Animal } from "../../../common/tables/Animal";
 
