@@ -53,7 +53,7 @@
         <button mat-button color="accent" (click)="editAnimal(info.animal, i)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-button color="warn">
+        <button mat-button color="warn" (click)="deleteAnimal(info.animal.numAnimal, info.animal.numClinique, i)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>

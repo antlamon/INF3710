@@ -88,6 +88,16 @@ export class AnimalComponent {
     });
   }
 
+  protected deleteAnimal(numAnimal: string, numClinique: string, i: number): void {
+    this.communicationService.deleteAnimal(numAnimal, numClinique).subscribe((success: number) => {
+      if (success) {
+        this.animalInfos.splice(i, 1);
+      } else {
+        // TODO : Gestion d'erreur
+      }
+    });
+  }
+
   protected getAnimalTreatments(animalIndex: number): void {
     this.communicationService.getTreatments(
       this.animalInfos[animalIndex].animal.numAnimal,

@@ -35,19 +35,25 @@ export class CommunicationService {
         );
     }
 
+    public deleteAnimal(numAnimal: string, numClinique: string): Observable<number> {
+        return this.http.delete<number>(this.BASE_URL + "/animal", { params: { numAnimal, numClinique } }).pipe(
+            catchError(this.handleError<number>("getAnimals"))
+        );
+    }
+
     public getAnimalsFromPk(numClinique: string, numAnimal: string): Observable<Animal> {
-        return this.http.get<Animal>(this.BASE_URL + `/animal`, {params: {numClinique, numAnimal}}).pipe(
+        return this.http.get<Animal>(this.BASE_URL + `/animal`, { params: { numClinique, numAnimal } }).pipe(
             catchError(this.handleError<Animal>("getAnimal"))
         );
     }
     public getBill(numAnimal: string, numClinique: string): Observable<Bill> {
-        return this.http.get<Bill>(this.BASE_URL + "/bill", {params: {numAnimal, numClinique}}).pipe(
+        return this.http.get<Bill>(this.BASE_URL + "/bill", { params: { numAnimal, numClinique } }).pipe(
             catchError(this.handleError<Bill>("getBill"))
         );
     }
 
     public getTreatments(numAnimal: string, numClinique: string): Observable<PrescriptionTreatment[]> {
-        return this.http.get<PrescriptionTreatment[]>(this.BASE_URL + "/treatments", {params: {numAnimal, numClinique}}).pipe(
+        return this.http.get<PrescriptionTreatment[]>(this.BASE_URL + "/treatments", { params: { numAnimal, numClinique } }).pipe(
             catchError(this.handleError<PrescriptionTreatment[]>("getTreatments"))
         );
     }
