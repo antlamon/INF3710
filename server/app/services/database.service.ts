@@ -149,17 +149,6 @@ export class DatabaseService {
     public async getBill(numAnimal: string, numClinique: string): Promise<object> {
         const result: pg.QueryResult = await this.getTreatmentsFromAnimal(numAnimal, numClinique);
         if (result.rowCount > 0) {
-            const animal: Animal = {
-                numAnimal: result.rows[0].numanimal,
-                numProprietaire: result.rows[0].numproprietaire,
-                numClinique: result.rows[0].numclinique,
-                nom: result.rows[0].nom,
-                description: result.rows[0].description,
-                dateInscription: result.rows[0].dateinscription,
-                dateNaissance: result.rows[0].datenaissance,
-                type: result.rows[0].type,
-                etat: result.rows[0].etat,
-            };
             const treatments: object[] = [];
             result.rows.forEach((row: any) => {
                 treatments.push({
@@ -172,7 +161,7 @@ export class DatabaseService {
                 return price + treatment.prix;
             },                                           0);
 
-            return { animal, treatments, totalPrice };
+            return { treatments, totalPrice };
         } else { return { totalPrice: 0 }; }
     }
 }
