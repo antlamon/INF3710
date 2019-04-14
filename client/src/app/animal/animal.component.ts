@@ -26,7 +26,11 @@ export class AnimalComponent {
     this.submitted = true;
     this.communicationService.getAnimalsFromName(this.searchInput.value).subscribe((animals: Animal[]) => {
       this.animals = animals;
+      this.animals.forEach((animal: Animal) => {
+        animal.dateNaissance = new Date(animal.dateNaissance);
+        animal.dateInscription = new Date(animal.dateInscription);
+      });
       console.log(animals);
-    })
+    });
   }
 }
