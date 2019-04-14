@@ -41,8 +41,8 @@ export class DatabaseService {
         return this.pool.query(`SELECT * FROM VetoDB.${tableName};`);
     }
 
-    public getOwners(numClinique: string): Promise<pg.QueryResult> {
-        this.pool.connect();
+    public async getOwners(numClinique: string): Promise<pg.QueryResult> {
+        const client: pg.PoolClient = await this.pool.connect();
         let query: string = `SELECT numProprietaire, nom FROM VetoDB.Proprietaire`;
         if (numClinique) {
             query += ` WHERE numClinique = '${numClinique}';`;
@@ -50,23 +50,32 @@ export class DatabaseService {
             query += ';';
         }
 
-        return this.pool.query(query);
+        const result: pg.QueryResult = await this.pool.query(query);
+        client.release();
+
+        return result;
     }
 
-    public getClinics(): Promise<pg.QueryResult> {
-        this.pool.connect();
+    public async getClinics(): Promise<pg.QueryResult> {
+        const client: pg.PoolClient = await this.pool.connect();
 
-        return this.pool.query(`SELECT numClinique, nom FROM VetoDB.Clinique;`);
+        const result: pg.QueryResult = await this.pool.query(`SELECT numClinique, nom FROM VetoDB.Clinique;`);
+        client.release();
+
+        return result;
     }
 
-    public getAnimalsLikeName(name: string): Promise<pg.QueryResult> {
-        this.pool.connect();
+    public async getAnimalsLikeName(name: string): Promise<pg.QueryResult> {
+        const client: pg.PoolClient = await this.pool.connect();
 
-        return this.pool.query(`SELECT * FROM VetoDB.Animal WHERE nom LIKE '%${name}%';`);
+        const result: pg.QueryResult = await this.pool.query(`SELECT * FROM VetoDB.Animal WHERE nom LIKE '%${name}%';`);
+        client.release();
+
+        return result;
     }
 
-    public createAnimal(animal: Animal): Promise<pg.QueryResult> {
-        this.pool.connect();
+    public async createAnimal(animal: Animal): Promise<pg.QueryResult> {
+        const client: pg.PoolClient = await this.pool.connect();
         const values: string[] = [
             animal.numAnimal,
             animal.numProprietaire,
@@ -81,17 +90,24 @@ export class DatabaseService {
 
         const queryText: string = `INSERT INTO VetoDB.ANIMAL VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`;
 
-        return this.pool.query(queryText, values);
+        const result: pg.QueryResult = await this.pool.query(queryText, values);
+        client.release();
+
+        return result;
     }
 
-    public deleteAnimal(numAnimal: string, numClinique: string): Promise<pg.QueryResult> {
-        this.pool.connect();
+    public async deleteAnimal(numAnimal: string, numClinique: string): Promise<pg.QueryResult> {
+        const client: pg.PoolClient = await this.pool.connect();
 
-        return this.pool.query(`DELETE FROM VetoDB.Animal WHERE numAnimal = \'${numAnimal}\' AND numClinique = \'${numClinique}\';`);
+        const result: pg.QueryResult =
+            await this.pool.query(`DELETE FROM VetoDB.Animal WHERE numAnimal = \'${numAnimal}\' AND numClinique = \'${numClinique}\';`);
+        client.release();
+
+        return result;
     }
 
-    public updateAnimal(numAnimal: string, numClinique: string, newParams: object): Promise<pg.QueryResult> {
-        this.pool.connect();
+    public async updateAnimal(numAnimal: string, numClinique: string, newParams: object): Promise<pg.QueryResult> {
+        const client: pg.PoolClient = await this.pool.connect();
         let query: string = `UPDATE VetoDB.Animal \n`;
         const keys: string[] = Object.keys(newParams);
         if (keys.length > 0) {
@@ -109,11 +125,14 @@ export class DatabaseService {
 
         query = query.concat(`\nWHERE numAnimal = \'${numAnimal}\' AND numClinique = \'${numClinique}\';`);
 
-        return this.pool.query(query);
+        const result: pg.QueryResult = await this.pool.query(query);
+        client.release();
+
+        return result;
     }
 
-    public getTreatmentsFromAnimal(numAnimal: string, numClinique: string): Promise<pg.QueryResult> {
-        this.pool.connect();
+    public async getTreatmentsFromAnimal(numAnimal: string, numClinique: string): Promise<pg.QueryResult> {
+        const client: pg.PoolClient = await this.pool.connect();
         const query: string = `
         SELECT * FROM
         vetodb.animal NATURAL JOIN (SELECT p.*, description as descriptionTraitement, cout
@@ -121,23 +140,15 @@ export class DatabaseService {
         WHERE numAnimal = '${numAnimal}' AND numClinique = '${numClinique}';
         `;
 
-        return this.pool.query(query);
+        const result: pg.QueryResult = await this.pool.query(query);
+        client.release();
+
+        return result;
     }
 
     public async getBill(numAnimal: string, numClinique: string): Promise<object> {
         const result: pg.QueryResult = await this.getTreatmentsFromAnimal(numAnimal, numClinique);
         if (result.rowCount > 0) {
-            const animal: Animal = {
-                numAnimal: result.rows[0].numanimal,
-                numProprietaire: result.rows[0].numproprietaire,
-                numClinique: result.rows[0].numclinique,
-                nom: result.rows[0].nom,
-                description: result.rows[0].description,
-                dateInscription: result.rows[0].dateinscription,
-                dateNaissance: result.rows[0].datenaissance,
-                type: result.rows[0].type,
-                etat: result.rows[0].etat,
-            };
             const treatments: object[] = [];
             result.rows.forEach((row: any) => {
                 treatments.push({
@@ -148,9 +159,9 @@ export class DatabaseService {
             });
             const totalPrice: number = treatments.reduce((price: number, treatment: any) => {
                 return price + treatment.prix;
-            }, 0);
+            },                                           0);
 
-            return { animal, treatments, totalPrice };
-        } else { return { noBill: true }; }
+            return { treatments, totalPrice };
+        } else { return { totalPrice: 0 }; }
     }
 }

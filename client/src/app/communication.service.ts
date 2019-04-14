@@ -14,6 +14,7 @@ export class CommunicationService {
     public constructor (private http: HttpClient) { }
 
     public getAnimalsFromName(name: string): Observable<Animal[]> {
+        console.log("sending");
         return this.http.get<Animal[]>(this.BASE_URL + `/animal/${name}`).pipe(
             catchError(this.handleError<Animal[]>("getAnimals"))
         );
@@ -28,6 +29,17 @@ export class CommunicationService {
     public getOwnersFromClinic(numClinique: string): Observable<OwnerSimple[]> {
         return this.http.get<OwnerSimple[]>(this.BASE_URL + `/owners`, { params: { numClinique } }).pipe(
             catchError(this.handleError<OwnerSimple[]>("getClinics"))
+        );
+    }
+    public getBill(numAnimal: string, numClinique: string): Observable<object> {
+        return this.http.get<object>(this.BASE_URL + "/bill", { params: { numAnimal, numClinique } }).pipe(
+            catchError(this.handleError<object>("getBill"))
+        );
+    }
+
+    public getTreatments(numAnimal: string, numClinique: string): Observable<object> {
+        return this.http.get<object>(this.BASE_URL + "/treatments", { params: { numAnimal, numClinique } }).pipe(
+            catchError(this.handleError<object>("getTreatments"))
         );
     }
 
