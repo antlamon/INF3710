@@ -3,13 +3,15 @@ import { FormControl, Validators } from "@angular/forms";
 import { MatDialog, MatDialogConfig } from "@angular/material";
 
 import { Animal } from "../../../../common/tables/Animal";
+import { Bill } from "../../../../common/tables/Bill";
+import { PrescriptionTreatment } from "../../../../common/tables/PrescriptionTraitement";
 import { CommunicationService } from "../communication.service";
 import { NewAnimalFormComponent } from "./new-animal-form/new-animal-form.component";
 
 interface AnimalInfo {
   animal: Animal;
-  bill: object;
-  treatments: object;
+  bill: Bill;
+  treatments: PrescriptionTreatment[];
 }
 
 @Component({
@@ -19,12 +21,19 @@ interface AnimalInfo {
 })
 export class AnimalComponent {
   protected animalInfos: AnimalInfo[] = [];
-  protected displayedColumns: string[] = ["traitement", "quantite", "cout"];
+  protected displayedColumnsBill: string[] = ["numTraitement", "quantite", "cout"];
+  protected displayedColumnsTreatments: string[] = ["numPrescription", "numTraitement", "numExamen", "quantite",
+    "dateDebut", "dateFin", "descriptionTraitement", "cout"];
   protected searchInput: FormControl;
+  protected searchOneInputs: FormControl[];
   protected submitted: boolean;
 
   public constructor (private readonly dialog: MatDialog, private readonly communicationService: CommunicationService) {
     this.searchInput = new FormControl("", [Validators.required]);
+    this.searchOneInputs = [];
+    this.searchOneInputs.push(new FormControl("", [Validators.required]));
+    this.searchOneInputs.push(new FormControl("", [Validators.required]));
+
     this.submitted = false;
   }
 
@@ -42,7 +51,24 @@ export class AnimalComponent {
         this.getAnimalTreatments(i);
         this.getAnimalBill(i);
       }
-      console.log(animals);
+    });
+  }
+
+  protected submitOne(): void {
+    if (this.searchOneInputs[0].invalid || this.searchOneInputs[1].invalid) {
+      return;
+    }
+    this.submitted = true;
+    this.communicationService.getAnimalsFromPk(this.searchOneInputs[0].value, this.searchOneInputs[1].value).subscribe((animal: Animal) => {
+      this.animalInfos = [];
+      if (animal) {
+        animal.dateNaissance = new Date(animal.dateNaissance);
+        animal.dateInscription = new Date(animal.dateInscription);
+        this.animalInfos.push({ animal } as AnimalInfo);
+        this.getAnimalTreatments(0);
+        this.getAnimalBill(0);
+      }
+
     });
   }
 
@@ -66,9 +92,12 @@ export class AnimalComponent {
     this.communicationService.getTreatments(
       this.animalInfos[animalIndex].animal.numAnimal,
       this.animalInfos[animalIndex].animal.numClinique)
-      .subscribe((treatments: object) => {
+      .subscribe((treatments: PrescriptionTreatment[]) => {
+        treatments.forEach((treatment: PrescriptionTreatment) => {
+          treatment.dateDebut = new Date(treatment.dateDebut);
+          treatment.dateFin = new Date(treatment.dateFin);
+        });
         this.animalInfos[animalIndex].treatments = treatments;
-        console.log(treatments);
       });
   }
 
@@ -76,9 +105,8 @@ export class AnimalComponent {
     this.communicationService.getBill(
       this.animalInfos[animalIndex].animal.numAnimal,
       this.animalInfos[animalIndex].animal.numClinique)
-      .subscribe((bill: object) => {
+      .subscribe((bill: Bill) => {
         this.animalInfos[animalIndex].bill = bill;
-        console.log(bill);
       });
   }
 }

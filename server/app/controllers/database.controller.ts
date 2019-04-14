@@ -3,13 +3,14 @@ import { inject, injectable } from "inversify";
 import * as pg from "pg";
 
 import { Animal } from "../../../common/tables/Animal";
+import { PrescriptionTreatment } from "../../../common/tables/PrescriptionTraitement";
 
 import { DatabaseService } from "../services/database.service";
 import Types from "../types";
 
 @injectable()
 export class DatabaseController {
-    public constructor (@inject(Types.DatabaseService) private databaseService: DatabaseService) { }
+    public constructor(@inject(Types.DatabaseService) private databaseService: DatabaseService) { }
 
     public get router(): Router {
         const router: Router = Router();
@@ -80,6 +81,29 @@ export class DatabaseController {
                 });
             });
 
+        router.get(
+            "/animal",
+            (req: Request, res: Response, next: NextFunction) => {
+                // Send the request to the service and send the response
+                this.databaseService.getAnimalByPk(req.query.numClinique, req.query.numAnimal).then((result: pg.QueryResult) => {
+                    const animal: Animal | undefined = result.rows.map((an: any) => (
+                        {
+                            numAnimal: an.numanimal,
+                            numProprietaire: an.numproprietaire,
+                            numClinique: an.numclinique,
+                            nom: an.nom,
+                            type: an.type,
+                            description: an.description,
+                            dateNaissance: an.datenaissance,
+                            dateInscription: an.dateinscription,
+                            etat: an.etat
+                        })).pop();
+                    res.json(animal);
+                }).catch((e: Error) => {
+                    console.error(e.stack);
+                });
+            });
+
         router.post(
             "/animal",
             (req: Request, res: Response, next: NextFunction) => {
@@ -124,7 +148,17 @@ export class DatabaseController {
                 const numAnimal: string = req.query.numAnimal;
                 const numClinique: string = req.query.numClinique;
                 this.databaseService.getTreatmentsFromAnimal(numAnimal, numClinique).then((result: pg.QueryResult) => {
-                    res.json(result.rows);
+                    const pTs: PrescriptionTreatment[] = result.rows.map((row: any) => ({
+                        numPrescription: row.numprescription,
+                        numTraitement: row.numtraitement,
+                        numExamen: row.numexamen,
+                        quantite: row.quantite,
+                        dateDebut: row.datedebut,
+                        dateFin: row.datefin,
+                        descriptionTraitement: row.descriptiontraitement,
+                        cout: row.cout,
+                    }));
+                    res.json(pTs);
                 }).catch((e: Error) => {
                     console.error(e.stack);
                     res.json(-1);

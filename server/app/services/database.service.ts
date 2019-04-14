@@ -2,6 +2,7 @@ import { injectable } from "inversify";
 import * as pg from "pg";
 import "reflect-metadata";
 import { Animal } from "../../../common/tables/Animal";
+import { Bill, Treatment } from "../../../common/tables/Bill";
 import { schema } from "../createSchema";
 import { data } from "../populateDB";
 
@@ -74,6 +75,17 @@ export class DatabaseService {
         return result;
     }
 
+    public async getAnimalByPk(numClinique: string, numAnimal: string): Promise<pg.QueryResult> {
+        const client: pg.PoolClient = await this.pool.connect();
+
+        const result: pg.QueryResult = await this.pool.query(`
+        SELECT * FROM VetoDB.Animal WHERE numClinique = '${numClinique}' AND numAnimal = '${numAnimal}';
+        `);
+        client.release();
+
+        return result;
+    }
+
     public async createAnimal(animal: Animal): Promise<pg.QueryResult> {
         const client: pg.PoolClient = await this.pool.connect();
         const values: string[] = [
@@ -134,7 +146,7 @@ export class DatabaseService {
     public async getTreatmentsFromAnimal(numAnimal: string, numClinique: string): Promise<pg.QueryResult> {
         const client: pg.PoolClient = await this.pool.connect();
         const query: string = `
-        SELECT * FROM
+        SELECT PT.* FROM
         vetodb.animal NATURAL JOIN (SELECT p.*, description as descriptionTraitement, cout
                                     FROM vetodb.prescription p NATURAL JOIN vetodb.traitement) AS PT
         WHERE numAnimal = '${numAnimal}' AND numClinique = '${numClinique}';
@@ -146,10 +158,10 @@ export class DatabaseService {
         return result;
     }
 
-    public async getBill(numAnimal: string, numClinique: string): Promise<object> {
+    public async getBill(numAnimal: string, numClinique: string): Promise<Bill> {
         const result: pg.QueryResult = await this.getTreatmentsFromAnimal(numAnimal, numClinique);
         if (result.rowCount > 0) {
-            const treatments: object[] = [];
+            const treatments: Treatment[] = [];
             result.rows.forEach((row: any) => {
                 treatments.push({
                     numTraitement: row.numtraitement,
@@ -157,11 +169,13 @@ export class DatabaseService {
                     prix: row.quantite * row.cout,
                 });
             });
-            const totalPrice: number = treatments.reduce((price: number, treatment: any) => {
-                return price + treatment.prix;
-            },                                           0);
+            const totalPrice: number = treatments.reduce(
+                (price: number, treatment: any) => {
+                    return price + treatment.prix;
+                },
+                0);
 
             return { treatments, totalPrice };
-        } else { return { totalPrice: 0 }; }
+        } else { return { totalPrice: 0 } as Bill; }
     }
 }

@@ -12,6 +12,28 @@
     <mat-icon>add</mat-icon>
   </button>
 </div>
+<div class="bar-top">
+  <form ng-submit="submitOne()">
+    <table>
+      <tr>
+        <td>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Numéro de la clinique" [formControl]="searchOneInputs[0]">
+          </mat-form-field>
+        </td>
+        <td>
+          <mat-form-field>
+            <input type="text" matInput placeholder="Numéro de l'animal" [formControl]="searchOneInputs[1]">
+            <button mat-button matSuffix (click)="submitOne()"
+              [disabled]="searchOneInputs[0].invalid || searchOneInputs[1].invalid" color="accent">
+              <mat-icon>search</mat-icon>
+            </button>
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
 
 <div *ngIf="submitted">
   <h3>{{animalInfos ? animalInfos.length : 0}} Résultat{{animalInfos && animalInfos.length > 1 ? "s": ""}}</h3>
@@ -44,12 +66,57 @@
           <p>Description : {{info.animal.description}}</p>
         </mat-tab>
         <mat-tab label="Traitements">
-          Large content
+          <div *ngIf="info.treatments">
+            <table mat-table [dataSource]="info.treatments">
+              <ng-container matColumnDef="numPrescription">
+                <th mat-header-cell *matHeaderCellDef> Prescription </th>
+                <td mat-cell *matCellDef="let treatment"> {{treatment.numPrescription}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="numTraitement">
+                <th mat-header-cell *matHeaderCellDef> Traitement </th>
+                <td mat-cell *matCellDef="let treatment"> {{treatment.numTraitement}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="numExamen">
+                <th mat-header-cell *matHeaderCellDef> Examen </th>
+                <td mat-cell *matCellDef="let treatment"> {{treatment.numExamen}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="quantite">
+                <th mat-header-cell *matHeaderCellDef> Quantité </th>
+                <td mat-cell *matCellDef="let treatment"> {{treatment.quantite}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="dateDebut">
+                <th mat-header-cell *matHeaderCellDef> Date de début </th>
+                <td mat-cell *matCellDef="let treatment"> {{treatment.dateDebut.toLocaleDateString()}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="dateFin">
+                <th mat-header-cell *matHeaderCellDef> Date de fin </th>
+                <td mat-cell *matCellDef="let treatment"> {{treatment.dateFin.toLocaleDateString()}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="descriptionTraitement">
+                <th mat-header-cell *matHeaderCellDef> Description </th>
+                <td mat-cell *matCellDef="let treatment"> {{treatment.descriptionTraitement}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="cout">
+                <th mat-header-cell *matHeaderCellDef> Coût unitaire</th>
+                <td mat-cell *matCellDef="let treatment"> {{treatment.cout | currency}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsTreatments"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsTreatments;"></tr>
+            </table>
+          </div>
         </mat-tab>
         <mat-tab label="Facture">
           <div *ngIf="info.bill">
             <table mat-table [dataSource]="info.bill.treatments">
-              <ng-container matColumnDef="traitement">
+              <ng-container matColumnDef="numTraitement">
                 <th mat-header-cell *matHeaderCellDef> Traitement </th>
                 <td mat-cell *matCellDef="let treatment"> {{treatment.numTraitement}} </td>
                 <td mat-footer-cell *matFooterCellDef> Total </td>
@@ -67,9 +134,9 @@
                 <td mat-footer-cell *matFooterCellDef> {{info.bill.totalPrice | currency}} </td>
               </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsBill"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsBill;"></tr>
+              <tr mat-footer-row *matFooterRowDef="displayedColumnsBill"></tr>
             </table>
           </div>
         </mat-tab>
