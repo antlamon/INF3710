@@ -3,9 +3,11 @@ form {
 }
 
 .bar-top {
-    width: 100%;
     margin-top: 4%;
-    text-align: center;
+}
+
+.bar-bottom {
+  margin-bottom: 4%;
 }
 
 .mat-expansion-panel-header-title, 
@@ -23,11 +25,20 @@ form {
 }
 
 mat-form-field {
-  width: 100%
+  width: 100%;
 }
 
 button.mat-raised-button mat-icon {
   margin-left: 5px;
+}
+
+.add-button {
+  width: 100%;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
 }
 
 table {

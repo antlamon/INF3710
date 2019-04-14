@@ -1,37 +1,39 @@
-<div class="bar-top">
+<div class="bar-top search-bar">
   <form ng-submit="submit()">
-    <mat-form-field>
-      <input type="text" matInput placeholder="Nom de l'animal" [formControl]="searchInput">
+    <div class="search-bar">
+      <mat-form-field>
+        <input type="text" matInput placeholder="Nom de l'animal" [formControl]="searchInput">
+      </mat-form-field>
       <button mat-button matSuffix (click)="submit()" [disabled]="searchInput.invalid" color="accent">
         <mat-icon>search</mat-icon>
       </button>
-    </mat-form-field>
+    </div>
   </form>
-  <button mat-raised-button color="primary" (click)="openModal()">
-    <span>Ajouter</span>
-    <mat-icon>add</mat-icon>
-  </button>
 </div>
-<div class="bar-top">
+<div class="search-bar">
   <form ng-submit="submitOne()">
-    <table>
-      <tr>
-        <td>
-          <mat-form-field>
-            <input type="text" matInput placeholder="Numéro de la clinique" [formControl]="searchOneInputs[0]">
-          </mat-form-field>
-        </td>
-        <td>
-          <mat-form-field>
-            <input type="text" matInput placeholder="Numéro de l'animal" [formControl]="searchOneInputs[1]">
-            <button mat-button matSuffix (click)="submitOne()"
-              [disabled]="searchOneInputs[0].invalid || searchOneInputs[1].invalid" color="accent">
-              <mat-icon>search</mat-icon>
-            </button>
-          </mat-form-field>
-        </td>
-      </tr>
-    </table>
+    <div class="search-bar">
+      <mat-form-field>
+        <input type="text" matInput placeholder="Numéro de la clinique" [formControl]="searchOneInputs[0]">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input type="text" matInput placeholder="Numéro de l'animal" [formControl]="searchOneInputs[1]">
+      </mat-form-field>
+
+      <button mat-button matSuffix (click)="submitOne()"
+        [disabled]="searchOneInputs[0].invalid || searchOneInputs[1].invalid" color="accent">
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
+  </form>
+</div>
+<div class="search-bar bar-bottom">
+  <form>
+    <button mat-button class="add-button" color="primary" (click)="openModal()">
+      <span>Ajouter</span>
+      <mat-icon>add</mat-icon>
+    </button>
   </form>
 </div>
 
