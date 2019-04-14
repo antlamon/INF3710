@@ -1,12 +1,14 @@
 import { Component } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { Animal } from "../../../../common/tables/Animal";
+import { Bill } from "../../../../common/tables/Bill";
+import { PrescriptionTreatment } from "../../../../common/tables/PrescriptionTraitement";
 import { CommunicationService } from "../communication.service";
 
 interface AnimalInfo {
   animal: Animal;
-  bill: object;
-  treatments: object;
+  bill: Bill;
+  treatments: PrescriptionTreatment;
 }
 
 @Component({
@@ -39,25 +41,22 @@ export class AnimalComponent {
         this.getAnimalTreatments(i);
         this.getAnimalBill(i);
       }
-      console.log(animals);
     });
   }
 
   protected getAnimalTreatments(animalIndex: number): void {
     this.communicationService.getTreatments(this.animalInfos[animalIndex].animal.numAnimal,
                                             this.animalInfos[animalIndex].animal.numClinique)
-      .subscribe((treatments: object) => {
+      .subscribe((treatments: PrescriptionTreatment) => {
         this.animalInfos[animalIndex].treatments = treatments;
-        console.log(treatments);
       });
   }
 
   protected getAnimalBill(animalIndex: number): void {
     this.communicationService.getBill(this.animalInfos[animalIndex].animal.numAnimal,
                                       this.animalInfos[animalIndex].animal.numClinique)
-      .subscribe((bill: object) => {
+      .subscribe((bill: Bill) => {
         this.animalInfos[animalIndex].bill = bill;
-        console.log(bill);
       });
   }
 }
