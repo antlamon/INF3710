@@ -1,7 +1,7 @@
 <form ng-submit="submit()">
   <mat-form-field>
     <input type="text" matInput placeholder="Nom de l'animal" [formControl]="searchInput">
-    <button mat-button matSuffix (click)="submit()" [disabled]="searchInput.invalid">
+    <button mat-button matSuffix (click)="submit()" [disabled]="searchInput.invalid" color="accent">
       <mat-icon>search</mat-icon>
     </button>
   </mat-form-field>
