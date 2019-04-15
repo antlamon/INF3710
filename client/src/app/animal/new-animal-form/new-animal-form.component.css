@@ -1,3 +1,20 @@
 .center {
     text-align: center;
 }
+
+mat-grid-title {
+    text-align: left;
+}
+
+.tag {
+    width: 50%;
+    display: inline-block;
+}
+
+.group {
+    height: 60px;
+}
+
+.group-tall {
+    height: 115px;
+}

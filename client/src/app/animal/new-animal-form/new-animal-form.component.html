@@ -35,38 +35,52 @@
   <mat-step>
     <ng-template matStepLabel>Entrez les informations de l'animal</ng-template>
     <form [formGroup]="animalForm" ng-submit="submit()">
-      <div>
-        <span>Numéro de l'animal :</span>
+      <div class="group">
+        <span class="tag">Numéro :</span>
         <mat-form-field *ngIf="newAnimal">
           <input type="text" matInput placeholder="Ex: A0000" formControlName="numAnimal" maxlength="5">
         </mat-form-field>
       </div>
-      <mat-form-field>
-        <input type="text" matInput placeholder="nom de l'animal" formControlName="nom">
-      </mat-form-field>
-      <mat-form-field>
-        <input type="text" matInput placeholder="type d'animal" formControlName="type">
-      </mat-form-field>
-      <mat-form-field>
-        <input type="text" matInput placeholder="description de l'animal" formControlName="description">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Date de naissance de l'animal"
-          formControlName="dateNaissance">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field *ngIf="!newAnimal">
-        <mat-label>État</mat-label>
-        <mat-select formControlName="etat">
-          <mat-option value="Vivant">
-            Vivant
-          </mat-option>
-          <mat-option value="Decede">
-            Décédé
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="group">
+        <span class="tag">Nom :</span>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Ex: Cachou" formControlName="nom">
+        </mat-form-field>
+      </div>
+      <div class="group">
+        <span class="tag">Type d'animal :</span>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Ex: Chat" formControlName="type">
+        </mat-form-field>
+      </div>
+      <div class="group-tall">
+        <span class="tag">Description :</span>
+        <mat-form-field>
+          <textarea matInput cols="40" rows="4" formControlName="description"></textarea>
+        </mat-form-field>
+      </div>
+      <div class="group">
+        <span class="tag">Date de naissance :</span>
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" placeholder="Ex: 4/1/2019" formControlName="dateNaissance">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="group" *ngIf="!newAnimal">
+        <span class="tag">État :</span>
+        <mat-form-field>
+          <mat-label>État</mat-label>
+          <mat-select formControlName="etat">
+            <mat-option value="Vivant">
+              Vivant
+            </mat-option>
+            <mat-option value="Decede">
+              Décédé
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <div class="center">
         <button mat-button color="accent" matStepperPrevious>Back</button>
         <button type="submit" mat-button color="accent" (click)="submit()"
