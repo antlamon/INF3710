@@ -104,19 +104,3 @@ CREATE TABLE IF NOT EXISTS Examen (
 
 ALTER TABLE Prescription
 ADD CONSTRAINT examRef FOREIGN KEY (numExamen) REFERENCES Examen(numPrescription) ON DELETE RESTRICT;
-
-/* TODO : Ajout trigger gestionnaire + Veterinaire*/
-CREATE OR REPLACE FUNCTION processValGest() RETURNS TRIGGER AS $valGest$
-    BEGIN
-        IF (TG_OP = 'UPDATE') THEN
-            RETURN NEW;
-        ELSIF (TG_OP = 'INSERT') THEN
-            RETURN NEW;
-        END IF;
-        RETURN NULL;
-    END;
-$valGest$ LANGUAGE plpgsql;
-
-CREATE TRIGGER valGest
-    AFTER INSERT OR UPDATE ON Clinique
-    FOR EACH ROW EXECUTE PROCEDURE processValGest();
