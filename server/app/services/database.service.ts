@@ -20,28 +20,6 @@ export class DatabaseService {
 
     private pool: pg.Pool = new pg.Pool(this.connectionConfig);
 
-    /*
-
-    METHODES DE DEBUG
-    */
-    public createSchema(): Promise<pg.QueryResult> {
-        this.pool.connect();
-
-        return this.pool.query(schema);
-    }
-
-    public populateDb(): Promise<pg.QueryResult> {
-        this.pool.connect();
-
-        return this.pool.query(data);
-    }
-
-    public getAllFromTable(tableName: string): Promise<pg.QueryResult> {
-        this.pool.connect();
-
-        return this.pool.query(`SELECT * FROM VetoDB.${tableName};`);
-    }
-
     public async getOwners(numClinique: string): Promise<pg.QueryResult> {
         const client: pg.PoolClient = await this.pool.connect();
         const query: string = numClinique ? `SELECT numProprietaire, nom FROM VetoDB.Proprietaire WHERE numClinique = '${numClinique}';`

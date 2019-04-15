@@ -15,28 +15,6 @@ export class DatabaseController {
     public get router(): Router {
         const router: Router = Router();
 
-        router.post(
-            "/createSchema",
-            (req: Request, res: Response, next: NextFunction) => {
-                this.databaseService.createSchema().then((result: pg.QueryResult) => {
-                    console.log("CECI EST UNE FONCTION DE TEST SEULEMENT");
-                    res.json(result);
-                }).catch((e: Error) => {
-                    console.error(e.stack);
-                });
-            });
-
-        router.post(
-            "/populateDb",
-            (req: Request, res: Response, next: NextFunction) => {
-                this.databaseService.populateDb().then((result: pg.QueryResult) => {
-                    console.log("CECI EST UNE FONCTION DE TEST SEULEMENT");
-                    res.json(result);
-                }).catch((e: Error) => {
-                    console.error(e.stack);
-                });
-            });
-
         router.get(
             "/owners",
             (req: Request, res: Response, next: NextFunction) => {
@@ -176,17 +154,6 @@ export class DatabaseController {
                     console.error(e.stack);
                     res.json(-1);
                 });
-            });
-
-        router.get(
-            "/tables/:tableName",
-            (req: Request, res: Response, next: NextFunction) => {
-                this.databaseService.getAllFromTable(req.params.tableName)
-                    .then((result: pg.QueryResult) => {
-                        res.json(result.rows);
-                    }).catch((e: Error) => {
-                        console.error(e.stack);
-                    });
             });
 
         return router;
