@@ -3,8 +3,6 @@ import * as pg from "pg";
 import "reflect-metadata";
 import { Animal } from "../../../common/tables/Animal";
 import { Bill, Treatment } from "../../../common/tables/Bill";
-import { schema } from "../createSchema";
-import { data } from "../populateDB";
 
 @injectable()
 export class DatabaseService {

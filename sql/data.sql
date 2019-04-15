@@ -168,7 +168,7 @@ INSERT INTO Proprietaire VALUES
 (
     'P0000',
     'C0001',
-    'Pas original',
+    'Pas originalblay',
     '11 rue des rats',
     '4504194333'
 ),
@@ -189,6 +189,17 @@ INSERT INTO Animal VALUES
     'Chat',
     'Chat incompetent qui ne fait que dormir dans le salon. Il aime bien la lasagne',
     '2000-01-01',
+    '2019-04-13',
+    'Vivant'
+),
+(
+    'A0010',
+    'P0000',
+    'C0000',
+    'Cachou the first',
+    'Chien',
+    'Il a de drole de longues oreilles',
+    '2010-01-01',
     '2019-04-13',
     'Vivant'
 ),
@@ -316,6 +327,16 @@ INSERT INTO Prescription VALUES
     1,
     '2019-04-13',
     '2019-04-13'
+),
+(
+    'R0016',
+    'A0000',
+    'T0000',
+    'C0000',
+    NULL,
+    1,
+    '2020-04-13',
+    '2020-04-13'
 );
 
 INSERT INTO Examen VALUES
@@ -340,6 +361,12 @@ INSERT INTO Examen VALUES
 (    
     'R0005',
     'E0006',
+    '12:00',
+    'Examen annuel'
+),
+(
+    'R0016',
+    'E0001',
     '12:00',
     'Examen annuel'
 );

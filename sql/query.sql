@@ -59,7 +59,7 @@ FROM Employe
 WHERE fonction = 'Veterinaire' AND nom = 'Jean Tremblay';
 
 /* 12) Lister les détails des propriétaires qui ont un chat et un chien. */
-SELECT DISTINCT *
+SELECT DISTINCT p.*
 FROM Proprietaire AS p JOIN (
 SELECT numClinique, numProprietaire FROM Animal WHERE type = 'Chat'
 INTERSECT
