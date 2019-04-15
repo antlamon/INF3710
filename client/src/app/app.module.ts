@@ -17,6 +17,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { CommunicationService } from "./communication.service";
 import { HomeComponent } from "./home/home.component";
+import { ProprietaireComponent } from './proprietaire/proprietaire.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { HomeComponent } from "./home/home.component";
     AnimalComponent,
     HomeComponent,
     NewAnimalFormComponent,
+    ProprietaireComponent,
   ],
   imports: [
     CommonModule,
