@@ -1,3 +1,8 @@
+Hypothèses: 
+
+1) L'attribut nom pour les employés et les propriétaires 
+
+
 Employï¿½:
 nom contient prï¿½nom + nom expliquer compliquï¿½
 Examen:
