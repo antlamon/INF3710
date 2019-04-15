@@ -2,3 +2,11 @@ mat-card {
     cursor: pointer;
     margin: 20px;
 }
+
+p.end {
+    text-align: right;
+}
+
+p.cit {
+    height: 36px;
+}
